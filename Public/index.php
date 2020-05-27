@@ -3,8 +3,8 @@ namespace web;
 
 use App\Src\Autoloader;
 
-require_once __DIR__ . '/../app/src/Autoloader.php';
+require_once __DIR__ . '/../App/Src/Autoloader.php';
 Autoloader::register();
 
-$app = require_once __DIR__ . '/../app/bootstrap.php';
+$app = require_once __DIR__ . '/../App/Bootstrap.php';
 $app->run();
