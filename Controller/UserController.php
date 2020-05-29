@@ -14,7 +14,7 @@ class UserController extends ControllerBase
     }
 
     public function userLoginFormHandler(Request $request) {
-        return $this->app->render('Login');
+        return $this->app->render('login');
     }
 
     public function userLoginHandler(Request $request) {
