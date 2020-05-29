@@ -4,6 +4,7 @@ namespace App;
 use Controller\CityController;
 use Controller\RestaurantsController;
 use App\Src\App;
+use Controller\UserController;
 
 class Routing
 {
@@ -18,6 +19,7 @@ class Routing
 
         $city = new CityController($this->app);
         $restaurant = new RestaurantsController($this->app);
+        $user = new UserController($this->app);
 
         $this->app->get('/', [$city, 'citiesHandler']);
 
@@ -33,7 +35,7 @@ class Routing
 
         $this->app->get('/recherche/(\w+)', [$city, 'searchHandler']);
         
-        $this->app->post('/', [$city, 'createHandler']);
+        //$this->app->post('/', [$city, 'createHandler']);
 
         $this->app->get('/restaurants', [$restaurant, 'restaurantsHandler']);
 
@@ -48,5 +50,9 @@ class Routing
         $this->app->post('/restaurant/(\d+)', [$restaurant, 'updateHandler']);
 
         $this->app->get('/restaurant/(\d+)/deleted', [$restaurant, 'deleteHandler']);
+
+        $this->app->get('/login', [$user, 'userLoginFormHandler']);
+
+        $this->app->post('/', [$user, 'userLoginHandler']);
     }
 }
