@@ -85,7 +85,8 @@ class UserFinder implements FinderInterface
 
     public function save(array $user) : bool
     {
-        $query = $this->conn->prepare('INSERT INTO user (username, password, email) VALUES (:username, :password, :email)'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        var_dump($user);
+        $query = $this->conn->prepare('INSERT INTO user (username, password, email) VALUES (:username, :password, :email)');
         return $query->execute([
             ':username' => $user['username'],
             ':password'=> $user['password'],
