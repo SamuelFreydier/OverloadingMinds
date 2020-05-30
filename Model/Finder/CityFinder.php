@@ -41,8 +41,7 @@ class CityFinder implements FinderInterface
         $query = $this->conn->prepare('SELECT c.id, c.name, c.country, c.life FROM city c WHERE c.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':id' => $id]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);   
-        
-        if($element === null) return null;
+        if($element === false) return null;
         
         $city = new CityGateway($this->app);
         $city->hydrate($element);

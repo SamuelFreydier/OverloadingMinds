@@ -8,10 +8,10 @@
     <title>All Cities</title>
     <body>
     <h1>All Cities</h1>
-    <?php if(isset($params['flash'])) {
+    <?php if(session_status() === PHP_SESSION_ACTIVE) {
         echo "
            <p style='color: green'>
-            " . $params['flash'] . " 
+            " . $_SESSION['auth'] . " 
            </p>
         ";
     } ?>

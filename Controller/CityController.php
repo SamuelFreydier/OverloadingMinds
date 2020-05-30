@@ -15,9 +15,12 @@ class CityController extends ControllerBase
     public function cityHandler(Request $request, $id)
     {
         if(!$id) {
-            $this->app->render('404');
+            return $this->app->render('404');
         }
         $city = $this->app->getService('cityFinder')->findOneById($id);
+        if($city === null) {
+            return $this->app->render('404');
+        }
         return $this->app->render('city', ["city" => $city]);
     }
 

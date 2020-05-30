@@ -12,6 +12,7 @@ class UserGateway
     private $username;
     private $password;
     private $bio;
+    private $email;
 
     public function __construct(App $app)
     {
@@ -44,6 +45,14 @@ class UserGateway
 
     public function setBio($bio) {
         $this->bio = $bio;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+    public function getEmail() {
+        return $this->email;
     }
 
     public function insert() : void {
@@ -87,5 +96,6 @@ class UserGateway
         $this->username = $element['username'];
         $this->password = $element['password'];
         $this->bio = $element['bio'];
+        $this->email = $element['email'];
     }
 }

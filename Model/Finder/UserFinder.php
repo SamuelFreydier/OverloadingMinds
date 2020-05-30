@@ -18,7 +18,7 @@ class UserFinder implements FinderInterface
 
     public function findAll()
     {
-        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio FROM user u ORDER BY u.username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email FROM user u ORDER BY u.username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute(); // Exécution de la requête
         $elements = $query->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -38,7 +38,7 @@ class UserFinder implements FinderInterface
 
     public function findOneById($id)
     {
-        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio FROM user u WHERE u.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email FROM user u WHERE u.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':id' => $id]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);   
         
@@ -52,7 +52,7 @@ class UserFinder implements FinderInterface
 
     public function findOneByUsername($username)
     {
-        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio FROM user u WHERE u.username = :username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email FROM user u WHERE u.username = :username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':username' => $username]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);
         if($element === false) return null;
@@ -83,13 +83,13 @@ class UserFinder implements FinderInterface
         return $cities;
     }
 
-    public function save(array $city) : bool
+    public function save(array $user) : bool
     {
-        $query = $this->conn->prepare('INSERT INTO city (name, country, life) VALUES (:name, :country, :life)'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('INSERT INTO user (username, password, email) VALUES (:username, :password, :email)'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         return $query->execute([
-            ':name' => $city['name'],
-            ':country'=> $city['country'],
-            ':life' => $city['life']
+            ':username' => $user['username'],
+            ':password'=> $user['password'],
+            ':email' => $user['email']
         ]);
     }
 

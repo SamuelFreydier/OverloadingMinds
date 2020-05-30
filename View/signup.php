@@ -15,12 +15,13 @@
 
         <h1 id="Title">OVERLOADING <br>MINDS</h1>
         
-        <form id="login_box" action="/" method="POST">
-            <div><input type="text" name="username" placeholder="username" value="<?php if(isset($user)) echo $user['username']; ?>"></div>
+        <form id="login_box" style="height :46vh" action ='/' method='POST'>
+            <div><input type="email" name="email" placeholder="e-mail"></div>
+            <div><input type="text" name="username" placeholder="username"></div>
             <div><input type="password" name="password" placeholder="password"></div>
-            <a href="#"">forgot the password ?</a>
-            <button type="submit">log in</button>
-            <a href="/signup">sign up</a>
+            <div><input type="password" name="passwordconf" placeholder="confirm password"></div>
+            <button type="submit">Create account</button>
+            <a href="/login">Cancel</a>
         </form>
 
         <div id="Image_BottomLeft"></div>

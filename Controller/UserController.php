@@ -17,6 +17,47 @@ class UserController extends ControllerBase
         return $this->app->render('login');
     }
 
+    public function userSignupFormHandler(Request $request) {
+        return $this->app->render('signup');
+    }
+
+    public function userSignupHandler(Request $request) {
+        $username = $request->getParameters('username');
+        $email = $request->getParameters('email');
+        $password = $request->getParameters('password');
+        $passwordconf = $request->getParameters('passwordconf');
+
+        if($password != $passwordconf || empty($email) || empty($username) || empty($password)) {
+            $flash = "NON";
+            header('Location: https://overloadingminds.cleverapps.io/signup');
+            exit();
+        }
+
+        $user = $this->app->getService('userFinder')->findOneByUsername($username);
+        if($user != null) {
+            header('Location: https://overloadingminds.cleverapps.io/signup');
+            exit();
+        }
+        $passwordhashed = password_hash($password, PASSWORD_DEFAULT);
+
+        $newuser = [
+            'username' => $username,
+            'password' => $passwordhashed,
+            'email' => $email
+        ];
+
+        $result = $this->app->getService('userFinder')->save($newuser);
+
+        if(!isset($result)) {
+            header('Location: https://overloadingminds.cleverapps.io/signup');
+            exit();
+        }
+        $cities = $this->app->getService('cityFinder')->findAll();
+        session_start();
+        $_SESSION['auth'] = $username;
+        return $this->app->render('cities', ["cities" => $cities]);
+    }
+
     public function userLoginHandler(Request $request) {
         $username = $request->getParameters('username');
         $password = $request->getParameters('password');
@@ -25,14 +66,20 @@ class UserController extends ControllerBase
         $cities = $this->app->getService('cityFinder')->findAll();
         if($result === null) {
             $flash = "NON";
-            return $this->app->render('login', ["cities" => $cities, "flash" => $flash]);
+            header('Location: https://overloadingminds.cleverapps.io/login');
+            exit();
         }
-        if ($result->getPassword() != $password) {
+        if (!password_verify($password, $result->getPassword())) {
             $flash = "NON";
-            return $this->app->render('login', ["cities" => $cities, "flash" => $flash]);
+            header('Location: https://overloadingminds.cleverapps.io/login');
+            exit();
         }
-
-        $flash = "OUI";
+        if(session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION['auth'] = $username;
+        $flash = $username;
+        header('Location: https://overloadingminds.cleverapps.io');
         return $this->app->render('cities', ["cities" => $cities, "flash" => $flash]);
     }
 

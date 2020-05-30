@@ -1,5 +1,4 @@
 <style>
-
 *{
     margin:0px;
     padding: 0px;
@@ -39,20 +38,15 @@ content{
     justify-self: center;
     display: flex;
     flex-direction: column;
-    height: 400px;
     width: 370px;
     background-color: #FF8B8B;
     border-radius: 1px;
+    padding-top: 3vh;
 }
 
 form > div{
-    margin-top: 8%;
-    height: 12%;
-}
-
-form > div:first-of-type{
-    margin-top: 15%;
-
+    margin-top: 5%;
+    height: 6vh;
 }
 
 input{
@@ -62,10 +56,9 @@ input{
     border-style: none;
     border-radius: 3px;
     width: 75%;
-    height: 100%;
+    height: 70%;
     text-align: start;
-    padding-left: 1vw;
-
+    padding: 6px 0px 6px  1vw;
 }
 
 input::placeholder{
@@ -76,18 +69,18 @@ form > a{
     color: #F9F8E6;
     font-size: 1.1em;
 }
-
+/*
 form > a:first-of-type{
     align-self: flex-end;
     margin-right: 5vh;
 }
-
+*/
 button{
     border-style: none;
     border-radius: 3px;
     width: 79%;
     height: 15%;
-    margin: 4vh auto;
+    margin:  auto;
     font-size: 1.4em;
     color: #F9F8E6;
     background-color: #189BA3;
@@ -104,5 +97,4 @@ button{
     background-repeat: no-repeat;
     margin-right: auto;
 }
-
 </style>

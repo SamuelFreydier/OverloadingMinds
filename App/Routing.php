@@ -53,6 +53,10 @@ class Routing
 
         $this->app->get('/login', [$user, 'userLoginFormHandler']);
 
-        $this->app->post('/', [$user, 'userLoginHandler']);
+        $this->app->post('/loginfinished', [$user, 'userLoginHandler']);
+
+        $this->app->get('/signup', [$user, 'userSignupFormHandler']);
+
+        $this->app->post('/', [$user, 'userSignupHandler']);
     }
 }
