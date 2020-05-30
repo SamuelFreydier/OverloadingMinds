@@ -3,6 +3,7 @@ namespace web;
 
 use App\Src\Autoloader;
 
+session_start();
 require_once __DIR__ . '/../App/Src/Autoloader.php';
 Autoloader::register();
 

@@ -74,9 +74,6 @@ class UserController extends ControllerBase
             header('Location: https://overloadingminds.cleverapps.io/login');
             exit();
         }
-        if(session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         $_SESSION['auth'] = $username;
         $flash = $username;
         header('Location: https://overloadingminds.cleverapps.io');

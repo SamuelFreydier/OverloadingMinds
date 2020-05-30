@@ -8,7 +8,7 @@
     <title>All Cities</title>
     <body>
     <h1>All Cities</h1>
-    <?php if(session_status() === PHP_SESSION_ACTIVE) {
+    <?php if(session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['auth'])) {
         echo "
            <p style='color: green'>
             " . $_SESSION['auth'] . " 

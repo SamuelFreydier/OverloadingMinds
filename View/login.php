@@ -15,7 +15,7 @@
 
         <h1 id="Title">OVERLOADING <br>MINDS</h1>
         
-        <form id="login_box" action="/" method="POST">
+        <form id="login_box" action="/loginfinished" method="POST">
             <div><input type="text" name="username" placeholder="username" value="<?php if(isset($user)) echo $user['username']; ?>"></div>
             <div><input type="password" name="password" placeholder="password"></div>
             <a href="#"">forgot the password ?</a>
