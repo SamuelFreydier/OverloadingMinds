@@ -26,8 +26,17 @@ class CityController extends ControllerBase
 
     public function citiesHandler(Request $request)
     {
-        $cities = $this->app->getService('cityFinder')->findAll();
-        return $this->app->render('cities', ["cities" => $cities]);
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('login');
+        }
+        $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
+        $author = $author->getId();
+        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
+        foreach($tweets as $tweet) {
+            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
+            $tweet->setAuthor($username->getUsername());
+        }
+        return $this->app->render('mainPage', ["tweets" => $tweets]);
     }
 
     public function countriesHandler(Request $request)

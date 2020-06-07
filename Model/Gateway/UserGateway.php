@@ -24,7 +24,7 @@ class UserGateway
     }
 
     public function getUsername(){
-        return $this->name;
+        return $this->username;
     }
 
     public function setUsername($username){

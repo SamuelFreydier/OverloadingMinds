@@ -5,6 +5,7 @@ use Controller\CityController;
 use Controller\RestaurantsController;
 use App\Src\App;
 use Controller\UserController;
+use Controller\TweetController;
 
 class Routing
 {
@@ -20,6 +21,7 @@ class Routing
         $city = new CityController($this->app);
         $restaurant = new RestaurantsController($this->app);
         $user = new UserController($this->app);
+        $tweet = new TweetController($this->app);
 
         $this->app->get('/', [$city, 'citiesHandler']);
 
@@ -57,6 +59,8 @@ class Routing
 
         $this->app->get('/signup', [$user, 'userSignupFormHandler']);
 
-        $this->app->post('/', [$user, 'userSignupHandler']);
+        $this->app->post('/created', [$user, 'userSignupHandler']);
+
+        $this->app->post('/', [$tweet, 'newTweetHandler']);
     }
 }

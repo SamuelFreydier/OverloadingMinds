@@ -15,7 +15,7 @@
 
         <h1 id="Title">OVERLOADING <br>MINDS</h1>
         
-        <form id="login_box" style="height :46vh" action ='/' method='POST'>
+        <form id="login_box" style="height :46vh" action ='/created' method='POST'>
             <div><input type="email" name="email" placeholder="e-mail"></div>
             <div><input type="text" name="username" placeholder="username"></div>
             <div><input type="password" name="password" placeholder="password"></div>

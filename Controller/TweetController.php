@@ -5,7 +5,7 @@ use Controller\ControllerBase;
 use App\Src\App;
 use App\Src\Request\Request;
 
-class UserController extends ControllerBase
+class TweetController extends ControllerBase
 {
 
     public function __construct(App $app)
@@ -13,30 +13,41 @@ class UserController extends ControllerBase
         parent::__construct($app);
     }
 
+    public function newTweethandler(Request $request) {
+        $text = $request->getParameters('text');
+        if(strlen($text) > 140) {
+            return $this->app->render('mainPage');
+        }
+
+        $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
+        $author = $author->getId();
+        $date = date("Y-m-d H:i:s");
+        var_dump($date);
+        $tweet = [
+            "text" => $text,
+            "date" => $date,
+            "author" => $author,
+            "retweet" => NULL
+        ];
+        $this->app->getService('tweetFinder')->save($tweet);
+        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
+        foreach($tweets as $tweet) {
+            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
+            $tweet->setAuthor($username->getUsername());
+        }
+        return $this->app->render('mainPage', ['tweets' => $tweets]);
+    }
+
     public function userLoginFormHandler(Request $request) {
         if(isset($_SESSION['auth'])) {
-            $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
-            $author = $author->getId();
-            $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-            foreach($tweets as $tweet) {
-                $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-                $tweet->setAuthor($username->getUsername());
-            }
-            return $this->app->render('mainPage', ["tweets" => $tweets]);
+            return $this->app->render('mainPage');
         }
         return $this->app->render('login');
     }
 
     public function userSignupFormHandler(Request $request) {
         if(isset($_SESSION['auth'])) {
-            $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
-            $author = $author->getId();
-            $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-            foreach($tweets as $tweet) {
-                $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-                $tweet->setAuthor($username->getUsername());
-            }
-            return $this->app->render('mainPage', ["tweets" => $tweets]);
+            return $this->app->render('mainPage');
         }
         return $this->app->render('signup');
     }
@@ -49,13 +60,13 @@ class UserController extends ControllerBase
 
         if($password != $passwordconf || empty($email) || empty($username) || empty($password)) {
             $flash = "NON";
-            header('Location: https://overloadingminds.cleverapps.io/signup');
+            header('Location: http://localhost:8000/signup');
             exit();
         }
 
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
         if($user != null) {
-            header('Location: https://overloadingminds.cleverapps.io/signup');
+            header('Location: http://localhost:8000/signup');
             exit();
         }
         $passwordhashed = password_hash($password, PASSWORD_DEFAULT);
@@ -69,20 +80,13 @@ class UserController extends ControllerBase
         $result = $this->app->getService('userFinder')->save($newuser);
 
         if(!isset($result)) {
-            header('Location: https://overloadingminds.cleverapps.io/signup');
+            header('Location: http://localhost:8000/signup');
             exit();
         }
         $cities = $this->app->getService('cityFinder')->findAll();
         session_start();
         $_SESSION['auth'] = $username;
-        $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
-        $author = $author->getId();
-        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-        foreach($tweets as $tweet) {
-            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-            $tweet->setAuthor($username->getUsername());
-        }
-        return $this->app->render('mainPage', ["tweets" => $tweets]);
+        return $this->app->render('mainPage', ["cities" => $cities]);
     }
 
     public function userLoginHandler(Request $request) {
@@ -93,25 +97,18 @@ class UserController extends ControllerBase
         $cities = $this->app->getService('cityFinder')->findAll();
         if($result === null) {
             $flash = "NON";
-            header('Location: https://overloadingminds.cleverapps.io/login');
+            header('Location: http://localhost:8000/login');
             exit();
         }
         if (!password_verify($password, $result->getPassword())) {
             $flash = "NON";
-            header('Location: https://overloadingminds.cleverapps.io/login');
+            header('Location: http://localhost:8000/login');
             exit();
         }
         $_SESSION['auth'] = $username;
         $flash = $username;
-        header('Location: https://overloadingminds.cleverapps.io');
-        $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
-        $author = $author->getId();
-        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-        foreach($tweets as $tweet) {
-            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-            $tweet->setAuthor($username->getUsername());
-        }
-        return $this->app->render('mainPage', ["tweets" => $tweets, "flash" => $flash]);
+        header('Location: http://localhost:8000');
+        return $this->app->render('mainPage', ["cities" => $cities, "flash" => $flash]);
     }
 
     public function restaurantsHandler(Request $request)

@@ -8,6 +8,7 @@ use Database\Database;
 use Model\Finder\CityFinder;
 use Model\Finder\RestaurantFinder;
 use Model\Finder\UserFinder;
+use Model\Finder\TweetFinder;
 
 $container = new ServiceContainer();
 $app = new App($container);
@@ -23,6 +24,7 @@ $app->setService('database', new Database(
 $app->setService('cityFinder', new CityFinder($app));
 $app->setService('restaurantFinder', new RestaurantFinder($app));
 $app->setService('userFinder', new UserFinder($app));
+$app->setService('tweetFinder', new TweetFinder($app));
 
 $routing = new Routing($app);
 $routing->setup();
