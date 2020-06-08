@@ -1,1 +1,1 @@
-<?php header("Location: http://localhost:8000/"); exit(); ?>
+<?php header("Location: https://overloadingminds.cleverapps.io/"); exit(); ?>
