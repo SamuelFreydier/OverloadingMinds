@@ -13,8 +13,28 @@ class TweetController extends ControllerBase
         parent::__construct($app);
     }
 
+    public function mainPageHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
+        $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
+        $author = $author->getId();
+        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
+        foreach($tweets as $tweet) {
+            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
+            $tweet->setAuthor($username->getUsername());
+            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+            $tweet->setLikes($tweetlikes->getLikes());
+        }
+        return $this->app->render('mainPage', ["tweets" => $tweets]);
+    }
+
     public function newTweethandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $text = $request->getParameters('text');
+        $request = [];
         if(strlen($text) > 140) {
             return $this->app->render('mainPage');
         }
@@ -36,12 +56,16 @@ class TweetController extends ControllerBase
             $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
             $tweet->setLikes($tweetlikes->getLikes());
         }
-        return $this->app->render('mainPage', ['tweets' => $tweets]);
+        return $this->app->render('formredirection', ['tweets' => $tweets]);
     }
 
     public function tweetLikeHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $id = $request->getParameters('id');
         $username = $_SESSION['auth'];
+        $request = [];
         $userid = $this->app->getService('userFinder')->findOneByUsername($username);
         $userid = $userid->getId();
         if($this->app->getService('tweetFinder')->findTweetLiked($id, $username) === null) {
@@ -57,7 +81,7 @@ class TweetController extends ControllerBase
             $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
             $tweet->setLikes($tweetlikes->getLikes());
         }
-        return $this->app->render('mainPage', ['tweets' => $tweets]);
+        return $this->app->render('formredirection', ['tweets' => $tweets]);
 
     }
 

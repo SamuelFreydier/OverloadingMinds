@@ -21,8 +21,10 @@ class UserController extends ControllerBase
             foreach($tweets as $tweet) {
                 $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
                 $tweet->setAuthor($username->getUsername());
+                $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+                $tweet->setLikes($tweetlikes->getLikes());
             }
-            return $this->app->render('mainPage', ["tweets" => $tweets]);
+            return $this->app->render('formredirection', ["tweets" => $tweets]);
         }
         return $this->app->render('login');
     }
@@ -35,8 +37,10 @@ class UserController extends ControllerBase
             foreach($tweets as $tweet) {
                 $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
                 $tweet->setAuthor($username->getUsername());
+                $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+                $tweet->setLikes($tweetlikes->getLikes());
             }
-            return $this->app->render('mainPage', ["tweets" => $tweets]);
+            return $this->app->render('formredirection', ["tweets" => $tweets]);
         }
         return $this->app->render('signup');
     }
@@ -82,7 +86,7 @@ class UserController extends ControllerBase
             $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
             $tweet->setAuthor($username->getUsername());
         }
-        return $this->app->render('mainPage', ["tweets" => $tweets]);
+        return $this->app->render('formredirection', ["tweets" => $tweets]);
     }
 
     public function userLoginHandler(Request $request) {
@@ -111,7 +115,7 @@ class UserController extends ControllerBase
             $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
             $tweet->setAuthor($username->getUsername());
         }
-        return $this->app->render('mainPage', ["tweets" => $tweets, "flash" => $flash]);
+        return $this->app->render('formredirection', ["tweets" => $tweets, "flash" => $flash]);
     }
 
     public function restaurantsHandler(Request $request)

@@ -23,7 +23,7 @@ class Routing
         $user = new UserController($this->app);
         $tweet = new TweetController($this->app);
 
-        $this->app->get('/', [$city, 'citiesHandler']);
+        $this->app->get('/', [$tweet, 'mainPageHandler']);
 
         $this->app->get('/city/(\d+)', [$city, 'cityHandler']);
 
