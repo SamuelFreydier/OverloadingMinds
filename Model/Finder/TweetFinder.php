@@ -35,6 +35,39 @@ class TweetFinder implements FinderInterface
         return $tweets;
     }
 
+    public function findTweetLiked($id, $username) {
+        $query = $this->conn->prepare('SELECT u.username, t.text, t.id FROM tweet t INNER JOIN user_like_tweet ult ON t.id = ult.tweet INNER JOIN user u ON u.id = ult.user WHERE t.id = :id AND u.username = :username');
+        $query->execute([
+            ':id' => $id,
+            ':username' => $username
+        ]);
+        $elements = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        if(count($elements) === 0) {
+            return null;
+        }
+        else {
+            return 1;
+        }
+    }
+
+    public function likeTweet($tweetid, $userid) {
+        $query = $this->conn->prepare('INSERT INTO user_like_tweet (tweet, user) VALUES (:tweet, :user)');
+        return $query->execute([
+            ':tweet' => $tweetid,
+            ':user' => $userid
+        ]);
+
+    }
+
+    public function unlikeTweet($tweetid, $userid) {
+        $query = $this->conn->prepare('DELETE ult FROM user_like_tweet ult WHERE ult.user = :user AND ult.tweet = :tweet');
+        return $query->execute([
+            ':tweet' => $tweetid,
+            ':user' => $userid
+        ]);
+    }
+
     public function findAll()
     {
         $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t ORDER BY t.date'); // Création de la requête + utilisation order by pour ne pas utiliser sort
@@ -57,16 +90,16 @@ class TweetFinder implements FinderInterface
 
     public function findOneById($id)
     {
-        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t WHERE t.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet, COUNT(ult.tweet) AS likes FROM tweet t INNER JOIN user_like_tweet ult ON ult.tweet = t.id WHERE t.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':id' => $id]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);   
         
         if($element === null) return null;
         
-        $user = new TweetGateway($this->app);
-        $user->hydrate($element);
+        $tweet = new TweetGateway($this->app);
+        $tweet->hydrate($element);
 
-        return $user;
+        return $tweet;
     }
 
     public function findByAuthor($author)

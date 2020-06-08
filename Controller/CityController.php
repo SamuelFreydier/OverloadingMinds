@@ -35,6 +35,8 @@ class CityController extends ControllerBase
         foreach($tweets as $tweet) {
             $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
             $tweet->setAuthor($username->getUsername());
+            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+            $tweet->setLikes($tweetlikes->getLikes());
         }
         return $this->app->render('mainPage', ["tweets" => $tweets]);
     }

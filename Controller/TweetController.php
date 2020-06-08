@@ -22,7 +22,6 @@ class TweetController extends ControllerBase
         $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
         $author = $author->getId();
         $date = date("Y-m-d H:i:s");
-        var_dump($date);
         $tweet = [
             "text" => $text,
             "date" => $date,
@@ -34,8 +33,32 @@ class TweetController extends ControllerBase
         foreach($tweets as $tweet) {
             $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
             $tweet->setAuthor($username->getUsername());
+            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+            $tweet->setLikes($tweetlikes->getLikes());
         }
         return $this->app->render('mainPage', ['tweets' => $tweets]);
+    }
+
+    public function tweetLikeHandler(Request $request) {
+        $id = $request->getParameters('id');
+        $username = $_SESSION['auth'];
+        $userid = $this->app->getService('userFinder')->findOneByUsername($username);
+        $userid = $userid->getId();
+        if($this->app->getService('tweetFinder')->findTweetLiked($id, $username) === null) {
+            $this->app->getService('tweetFinder')->likeTweet($id, $userid);
+        }
+        else {
+            $this->app->getService('tweetFinder')->unlikeTweet($id, $userid);
+        }
+        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($userid);
+        foreach($tweets as $tweet) {
+            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
+            $tweet->setAuthor($username->getUsername());
+            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+            $tweet->setLikes($tweetlikes->getLikes());
+        }
+        return $this->app->render('mainPage', ['tweets' => $tweets]);
+
     }
 
     public function userLoginFormHandler(Request $request) {
@@ -60,13 +83,13 @@ class TweetController extends ControllerBase
 
         if($password != $passwordconf || empty($email) || empty($username) || empty($password)) {
             $flash = "NON";
-            header('Location: http://localhost:8000/signup');
+            header('Location: https://overloadingminds.cleverapps.io/signup');
             exit();
         }
 
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
         if($user != null) {
-            header('Location: http://localhost:8000/signup');
+            header('Location: https://overloadingminds.cleverapps.io/signup');
             exit();
         }
         $passwordhashed = password_hash($password, PASSWORD_DEFAULT);
@@ -80,7 +103,7 @@ class TweetController extends ControllerBase
         $result = $this->app->getService('userFinder')->save($newuser);
 
         if(!isset($result)) {
-            header('Location: http://localhost:8000/signup');
+            header('Location: https://overloadingminds.cleverapps.io/signup');
             exit();
         }
         $cities = $this->app->getService('cityFinder')->findAll();
@@ -97,17 +120,17 @@ class TweetController extends ControllerBase
         $cities = $this->app->getService('cityFinder')->findAll();
         if($result === null) {
             $flash = "NON";
-            header('Location: http://localhost:8000/login');
+            header('Location: https://overloadingminds.cleverapps.io/login');
             exit();
         }
         if (!password_verify($password, $result->getPassword())) {
             $flash = "NON";
-            header('Location: http://localhost:8000/login');
+            header('Location: https://overloadingminds.cleverapps.io/login');
             exit();
         }
         $_SESSION['auth'] = $username;
         $flash = $username;
-        header('Location: http://localhost:8000');
+        header('Location: https://overloadingminds.cleverapps.io');
         return $this->app->render('mainPage', ["cities" => $cities, "flash" => $flash]);
     }
 

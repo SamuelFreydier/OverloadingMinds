@@ -14,6 +14,8 @@ class TweetGateway
     private $author;
     private $retweet;
 
+    private $likes;
+
     public function __construct(App $app)
     {
         $this->conn = $app->getService('database')->getConnection();
@@ -53,6 +55,14 @@ class TweetGateway
 
     public function getRetweet() {
         return $this->retweet;
+    }
+
+    public function getLikes() {
+        return $this->likes;
+    }
+
+    public function setLikes($likes) {
+        $this->likes = $likes;
     }
 
     public function insert() : void {
@@ -101,5 +111,8 @@ class TweetGateway
         $this->date = $element['date'];
         $this->author = $element['author'];
         $this->retweet = $element['retweet'];
+        if(isset($element['likes'])) {
+            $this->likes = $element['likes'];
+        }
     }
 }

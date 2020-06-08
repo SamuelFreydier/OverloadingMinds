@@ -101,9 +101,12 @@
                                 <!-- les likes -->
                                 <div class="tweerLikes">
                                     <!-- boutton pour liker -->
-                                    <button type="submit"><i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i></button>
+                                    <form action ="/liked" method = "POST">
+                                        <input type="hidden" name="id" value="<?php echo $tweet->getId(); ?>">
+                                        <button type="submit"><i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i></button>
+                                    </form>
                                     <!-- compteur de likes -->
-                                    <p>2</p>
+                                    <p><?php echo $tweet->getLikes(); ?></p>
                                 </div>
                             </div>
                         </div>
