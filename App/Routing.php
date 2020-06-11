@@ -64,5 +64,7 @@ class Routing
         $this->app->post('/', [$tweet, 'newTweetHandler']);
 
         $this->app->post('/liked', [$tweet, 'tweetLikeHandler']);
+
+        $this->app->post('/rt', [$tweet, 'newTweetHandler']);
     }
 }

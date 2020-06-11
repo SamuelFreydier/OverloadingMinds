@@ -68,6 +68,14 @@ class TweetFinder implements FinderInterface
         ]);
     }
 
+    public function rtTweet($tweetid, $userid) {
+        $query = $this->conn->prepare('DELETE ult FROM user_like_tweet ult WHERE ult.user = :user AND ult.tweet = :tweet');
+        return $query->execute([
+            ':tweet' => $tweetid,
+            ':user' => $userid
+        ]);
+    }
+
     public function findAll()
     {
         $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t ORDER BY t.date'); // Création de la requête + utilisation order by pour ne pas utiliser sort
@@ -91,6 +99,19 @@ class TweetFinder implements FinderInterface
     public function findOneById($id)
     {
         $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet, COUNT(ult.tweet) AS likes FROM tweet t INNER JOIN user_like_tweet ult ON ult.tweet = t.id WHERE t.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query->execute([':id' => $id]); // Exécution de la requête
+        $element = $query->fetch(\PDO::FETCH_ASSOC);   
+        
+        if($element === null) return null;
+        
+        $tweet = new TweetGateway($this->app);
+        $tweet->hydrate($element);
+
+        return $tweet;
+    }
+
+    public function findNbRetweetsById($id) {
+        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet, COUNT(t.retweet) AS nbRetweets FROM tweet t WHERE t.retweet = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':id' => $id]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);   
         
@@ -126,7 +147,4 @@ class TweetFinder implements FinderInterface
         ]);
     }
 
-
-    
-    
 }

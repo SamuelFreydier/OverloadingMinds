@@ -13,17 +13,32 @@ class UserController extends ControllerBase
         parent::__construct($app);
     }
 
+    public function renderTweets($tweets) {
+        foreach($tweets as $tweet) {
+            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
+            $tweet->setAuthor($username->getUsername());
+            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+            $tweet->setLikes($tweetlikes->getLikes());
+            $tweetrt = $this->app->getService('tweetFinder')->findNbRetweetsById($tweet->getId());
+            $tweet->setNbRt($tweetrt->getNbRt());
+            if($tweet->getRetweet() !== null) {
+                $retweeted = $this->app->getService('tweetFinder')->findOneById($tweet->getRetweet());
+                $retweetedNbRt = $this->app->getService('tweetFinder')->findNbRetweetsById($retweeted->getId());
+                $retweeted->setNbRt($retweetedNbRt->getNbRt());
+                $retweetuser = $this->app->getService('userFinder')->findOneById($retweeted->getAuthor());
+                $retweeted->setAuthor($retweetuser->getUsername());
+                $tweet->setRetweet($retweeted);
+            }
+        }
+        return $tweets;
+    }
+
     public function userLoginFormHandler(Request $request) {
         if(isset($_SESSION['auth'])) {
             $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
             $author = $author->getId();
             $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-            foreach($tweets as $tweet) {
-                $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-                $tweet->setAuthor($username->getUsername());
-                $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
-                $tweet->setLikes($tweetlikes->getLikes());
-            }
+            $tweets = $this->renderTweets($tweets);
             return $this->app->render('formredirection', ["tweets" => $tweets]);
         }
         return $this->app->render('login');
@@ -34,12 +49,7 @@ class UserController extends ControllerBase
             $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
             $author = $author->getId();
             $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-            foreach($tweets as $tweet) {
-                $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-                $tweet->setAuthor($username->getUsername());
-                $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
-                $tweet->setLikes($tweetlikes->getLikes());
-            }
+            $tweets = $this->renderTweets($tweets);
             return $this->app->render('formredirection', ["tweets" => $tweets]);
         }
         return $this->app->render('signup');
@@ -82,10 +92,7 @@ class UserController extends ControllerBase
         $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
         $author = $author->getId();
         $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-        foreach($tweets as $tweet) {
-            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-            $tweet->setAuthor($username->getUsername());
-        }
+        $tweets = $this->renderTweets($tweets);
         return $this->app->render('formredirection', ["tweets" => $tweets]);
     }
 
@@ -111,10 +118,7 @@ class UserController extends ControllerBase
         $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
         $author = $author->getId();
         $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-        foreach($tweets as $tweet) {
-            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-            $tweet->setAuthor($username->getUsername());
-        }
+        $tweets = $this->renderTweets($tweets);
         return $this->app->render('formredirection', ["tweets" => $tweets, "flash" => $flash]);
     }
 

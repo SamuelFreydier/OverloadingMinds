@@ -97,4 +97,64 @@ button{
     background-repeat: no-repeat;
     margin-right: auto;
 }
+
+
+
+/***************** MEDIA QUERY *****************/
+
+
+
+@media screen and (max-width: 1327px), screen and (max-height: 805px) {
+    #Image_TopRight{
+        background-size: 336px 120px;
+        height: 120px;
+        width: 336px;
+    }
+    #Title{
+        font-size: 3em;
+    }
+    #Image_BottomLeft{
+        background-size: 242px 230px;
+        min-height: 230px;
+        min-width: 242px;
+    }
+}
+
+@media screen and (max-width: 975px){
+    #Title{
+        font-size: 2em;
+    }
+}
+
+@media screen and (max-width: 647px){
+    #Title{
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-width: 647px), screen and (max-height: 609px){
+    #Image_TopRight{
+        background-size: 269px 96px;
+        height: 96px;
+        width: 269px;
+    }
+    #Image_BottomLeft{
+        background-size: 121px 115px;
+        min-height: 115px;
+        min-width: 121px;
+    }
+
+    input{
+        font-size: 1.2em;
+    }
+
+    button{
+        font-size: 1.2em;
+    }
+
+    #login_box{
+        width: 300px;
+    }
+}
+
 </style>

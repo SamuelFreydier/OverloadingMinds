@@ -96,7 +96,19 @@ content{
     margin: 5px;
     align-self: flex-end;
     font-size: 1.2em;
-    width: 3vw;
+    padding: 0px 5px;
+}
+
+.tweetMainContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 72px;
+    padding-top: 2vh;
+}
+
+.tweetMainContainer i{
+    margin-right: 5px;
 }
 
 .tweetContainer{
@@ -153,4 +165,117 @@ content{
 .tweerLikes p{
     margin-right: 10px;
 }
+
+.sideBlocks{
+    width: 30vw; 
+    height: 100%;
+}
+
+#profilInfo{
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+
+    font-size: 1.4em;
+    background-color: #F9F8E6;
+    margin-bottom: 3vh;
+}
+
+#ProfilInfoPic {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#ProfilInfoPic button {
+    padding: 0px 5px;
+    font-size: 1em;
+}
+
+#profilInfoText{
+    margin-left: 1vw;
+    margin-top: 10px;
+}
+
+#profilInfoText p:first-of-type{
+    margin-bottom: 10px;
+}
+
+.profilInfoStats{
+    display: flex;
+    flex-direction: row;
+    font-size: 0.87em;
+    margin-right: 1vw;
+    margin-top: 5px;
+}
+
+.profilInfoStats p{
+    margin-right: 5px;
+}
+
+.memberButton{
+    padding: 0px 5px;
+    font-size: 1em; 
+    margin: auto;
+}
+
+.memberProfilInfo{
+    display: flex;
+    flex-direction: row;
+    padding: 18px;
+    font-size: 1.4em;
+    background-color: #F9F8E6;
+    margin-bottom: 3vh;
+}
+
+
+
+/**************** MEDIA QUERY *****************/
+
+
+
+@media screen and (max-width: 1035px){
+    .sideBlocks{ width: 10vw; }
+    #timeline  { width: 60vw; } 
+}
+
+@media screen and (max-width: 703px){
+    .sideBlocks{ width: 5vw;  }
+    #timeline  { 
+        width: 70vw;
+        margin-top: 120px; 
+    } 
+    #topMenu{
+        flex-direction: column;
+        overflow: visible;
+        height: auto;
+    }
+    #topMenu #profilContainer{
+        margin-left: 0vw;
+    }
+    #topMenu #profilContainer img{
+        display: none;
+    }
+    #topMenu a:first-of-type{
+        height: 0px;
+    }
+    #topMenu #search_container button{
+
+        margin-right: 0vw;
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 573px){
+    .sideBlocks{ width: 0vw; }
+    #timeline  { width: 100vw; } 
+}
+
+@media screen and (max-width: 385px){
+    .memberProfilInfo{
+        flex-direction: column;
+    }
+}
+
 </style>

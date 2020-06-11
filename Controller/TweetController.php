@@ -13,6 +13,26 @@ class TweetController extends ControllerBase
         parent::__construct($app);
     }
 
+    public function renderTweets($tweets) {
+        foreach($tweets as $tweet) {
+            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
+            $tweet->setAuthor($username->getUsername());
+            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+            $tweet->setLikes($tweetlikes->getLikes());
+            $tweetrt = $this->app->getService('tweetFinder')->findNbRetweetsById($tweet->getId());
+            $tweet->setNbRt($tweetrt->getNbRt());
+            if($tweet->getRetweet() !== null) {
+                $retweeted = $this->app->getService('tweetFinder')->findOneById($tweet->getRetweet());
+                $retweetedNbRt = $this->app->getService('tweetFinder')->findNbRetweetsById($retweeted->getId());
+                $retweeted->setNbRt($retweetedNbRt->getNbRt());
+                $retweetuser = $this->app->getService('userFinder')->findOneById($retweeted->getAuthor());
+                $retweeted->setAuthor($retweetuser->getUsername());
+                $tweet->setRetweet($retweeted);
+            }
+        }
+        return $tweets;
+    }
+
     public function mainPageHandler(Request $request) {
         if(!isset($_SESSION['auth'])) {
             return $this->app->render('loginredirection');
@@ -20,12 +40,7 @@ class TweetController extends ControllerBase
         $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
         $author = $author->getId();
         $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-        foreach($tweets as $tweet) {
-            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-            $tweet->setAuthor($username->getUsername());
-            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
-            $tweet->setLikes($tweetlikes->getLikes());
-        }
+        $tweets = $this->renderTweets($tweets);
         return $this->app->render('mainPage', ["tweets" => $tweets]);
     }
 
@@ -34,6 +49,10 @@ class TweetController extends ControllerBase
             return $this->app->render('loginredirection');
         }
         $text = $request->getParameters('text');
+        $retweet = null;
+        if($request->getParameters('id') !== null) {
+            $retweet = $request->getParameters('id');
+        }
         $request = [];
         if(strlen($text) > 140) {
             return $this->app->render('mainPage');
@@ -46,16 +65,11 @@ class TweetController extends ControllerBase
             "text" => $text,
             "date" => $date,
             "author" => $author,
-            "retweet" => NULL
+            "retweet" => $retweet
         ];
         $this->app->getService('tweetFinder')->save($tweet);
         $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-        foreach($tweets as $tweet) {
-            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-            $tweet->setAuthor($username->getUsername());
-            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
-            $tweet->setLikes($tweetlikes->getLikes());
-        }
+        $tweets = $this->renderTweets($tweets);
         return $this->app->render('formredirection', ['tweets' => $tweets]);
     }
 
@@ -75,88 +89,12 @@ class TweetController extends ControllerBase
             $this->app->getService('tweetFinder')->unlikeTweet($id, $userid);
         }
         $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($userid);
-        foreach($tweets as $tweet) {
-            $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-            $tweet->setAuthor($username->getUsername());
-            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
-            $tweet->setLikes($tweetlikes->getLikes());
-        }
+        $tweets = $this->renderTweets($tweets);
         return $this->app->render('formredirection', ['tweets' => $tweets]);
-
     }
 
-    public function userLoginFormHandler(Request $request) {
-        if(isset($_SESSION['auth'])) {
-            return $this->app->render('mainPage');
-        }
-        return $this->app->render('login');
-    }
 
-    public function userSignupFormHandler(Request $request) {
-        if(isset($_SESSION['auth'])) {
-            return $this->app->render('mainPage');
-        }
-        return $this->app->render('signup');
-    }
-
-    public function userSignupHandler(Request $request) {
-        $username = $request->getParameters('username');
-        $email = $request->getParameters('email');
-        $password = $request->getParameters('password');
-        $passwordconf = $request->getParameters('passwordconf');
-
-        if($password != $passwordconf || empty($email) || empty($username) || empty($password)) {
-            $flash = "NON";
-            header('Location: https://overloadingminds.cleverapps.io/signup');
-            exit();
-        }
-
-        $user = $this->app->getService('userFinder')->findOneByUsername($username);
-        if($user != null) {
-            header('Location: https://overloadingminds.cleverapps.io/signup');
-            exit();
-        }
-        $passwordhashed = password_hash($password, PASSWORD_DEFAULT);
-
-        $newuser = [
-            'username' => $username,
-            'password' => $passwordhashed,
-            'email' => $email
-        ];
-
-        $result = $this->app->getService('userFinder')->save($newuser);
-
-        if(!isset($result)) {
-            header('Location: https://overloadingminds.cleverapps.io/signup');
-            exit();
-        }
-        $cities = $this->app->getService('cityFinder')->findAll();
-        session_start();
-        $_SESSION['auth'] = $username;
-        return $this->app->render('mainPage', ["cities" => $cities]);
-    }
-
-    public function userLoginHandler(Request $request) {
-        $username = $request->getParameters('username');
-        $password = $request->getParameters('password');
-
-        $result = $this->app->getService('userFinder')->findOneByUsername($username);
-        $cities = $this->app->getService('cityFinder')->findAll();
-        if($result === null) {
-            $flash = "NON";
-            header('Location: https://overloadingminds.cleverapps.io/login');
-            exit();
-        }
-        if (!password_verify($password, $result->getPassword())) {
-            $flash = "NON";
-            header('Location: https://overloadingminds.cleverapps.io/login');
-            exit();
-        }
-        $_SESSION['auth'] = $username;
-        $flash = $username;
-        header('Location: https://overloadingminds.cleverapps.io');
-        return $this->app->render('mainPage', ["cities" => $cities, "flash" => $flash]);
-    }
+    
 
     public function restaurantsHandler(Request $request)
     {

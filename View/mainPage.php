@@ -49,7 +49,7 @@
             <!-- Div qui contient toute la partie pour ecrire un tweet-->
             <div id="tweetBox">
                 <!-- Image a coté de la boite pour ecrire le tweet -->
-                <img src="../ressources/pp.jpg" class="profilPic"/>
+                <img src="../Ressources/pp.jpg" class="profilPic"/>
 
                 <!-- Div qui contient la boite de texte et le boutton pour poster -->
                 <div id="tweetPost">
@@ -68,49 +68,117 @@
 
 
                 <?php foreach ($params['tweets'] as $tweet) : ?>
-                    <!-- Code generique des tweets -->
-                    <div class="tweetContainer">
-                        <!-- Image du profil avec un <a> pour cliquer sur la photo -->
-                        <a href="#"><img src="../ressources/pp.jpg" class="profilPic"/></a>
 
-                        <!-- Partie principale du tweet -->
-                        <div class="tweetBody">
-                            <!-- Div avec le Username et la date du poste -->
-                            <div class="tweetInfo">
-                                <!-- Username -->
-                                <div>   <p><b><?php echo $tweet->getAuthor(); ?></b></p>   </div>
-                                <!-- Date -->
-                                <div>   <p><?php echo $tweet->getDate(); ?></p>   </div>
+                    <div>
+                        <?php if ($tweet->getRetweet() !== null): ?>
+                            <!-- div pour afficher qui a rt -->
+                            <div class="tweetMainContainer">
+                                <!-- icone de rt (a supprimer si aucun rt) -->
+                                <i class="fa fa-retweet" aria-hidden="true"></i>
+
+                                <!-- Qui a rt (a supprimer si aucun rt) -->
+                                <p><?php echo $tweet->getAuthor(); ?> a retweeté</p>
                             </div>
 
-                            <!-- le texte du tweet -->
-                            <div class="tweetText">   
-                                <p><?php echo $tweet->getText(); ?></p>   
-                            </div>
+                            <!-- Code generique des tweets -->
+                            <div class="tweetContainer">
+                                <!-- Image du profil avec un <a> pour cliquer sur la photo -->
+                                <a href="#"><img src="../ressources/pp.jpg" class="profilPic"/></a>
 
-                            <!-- Div qui contient les likes et retweets -->
-                            <div class="tweerLikes">
-                                <!-- les retweet -->
-                                <div class="tweerLikes">
-                                    <!-- Boutton pour retweeter -->
-                                    <button type="submit"><i class="fa fa-retweet fa-2x" aria-hidden="true"></i></button>
-                                    <!-- Compteur de rt-->
-                                    <p>2</p>
+                                <!-- Partie principale du tweet -->
+                                <div class="tweetBody">
+                                    <!-- Div avec le Username et la date du poste -->
+                                    <div class="tweetInfo">
+                                        <!-- Username -->
+                                        <div>   <p><b><?php echo $tweet->getRetweet()->getAuthor(); ?></b></p>   </div>
+                                        <!-- Date -->
+                                        <div>   <p><?php echo $tweet->getRetweet()->getDate(); ?></p>   </div>
+                                    </div>
+
+                                    <!-- le texte du tweet -->
+                                    <div class="tweetText">   
+                                        <p><?php echo $tweet->getRetweet()->getText(); ?></p>   
+                                    </div>
+
+                                    <!-- Div qui contient les likes et retweets -->
+                                    <div class="tweerLikes">
+                                        <!-- les retweet -->
+                                        <div class="tweerLikes">
+                                            <!-- Boutton pour retweeter -->
+                                            <form action="/rt" method="POST">
+                                                <input type="hidden" name="text" value="<?php echo null ?>">
+                                                <input type="hidden" name="id" value="<?php echo $tweet->getRetweet()->getId(); ?>">
+                                                <button type="submit"><i class="fa fa-retweet fa-2x" aria-hidden="true"></i></button>
+                                            </form>
+                                            <!-- Compteur de rt-->
+                                            <p><?php echo $tweet->getRetweet()->getNbRt(); ?></p>
+                                        </div>
+
+                                        <!-- les likes -->
+                                        <div class="tweerLikes">
+                                            <!-- boutton pour liker -->
+                                            <form action="/liked" method="POST">
+                                                <input type="hidden" name="id" value="<?php echo $tweet->getRetweet()->getId(); ?>">
+                                                <button type="submit"><i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i></button>
+                                            </form>
+                                            <!-- compteur de likes -->
+                                            <p><?php echo $tweet->getRetweet()->getLikes(); ?></p>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- les likes -->
-                                <div class="tweerLikes">
-                                    <!-- boutton pour liker -->
-                                    <form action ="/liked" method = "POST">
-                                        <input type="hidden" name="id" value="<?php echo $tweet->getId(); ?>">
-                                        <button type="submit"><i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i></button>
-                                    </form>
-                                    <!-- compteur de likes -->
-                                    <p><?php echo $tweet->getLikes(); ?></p>
-                                </div>
                             </div>
-                        </div>
 
+                        <?php else: ?>
+                            <!-- Code generique des tweets -->
+                            <div class="tweetContainer">
+                                <!-- Image du profil avec un <a> pour cliquer sur la photo -->
+                                <a href="#"><img src="../ressources/pp.jpg" class="profilPic"/></a>
+
+                                <!-- Partie principale du tweet -->
+                                <div class="tweetBody">
+                                    <!-- Div avec le Username et la date du poste -->
+                                    <div class="tweetInfo">
+                                        <!-- Username -->
+                                        <div>   <p><b><?php echo $tweet->getAuthor(); ?></b></p>   </div>
+                                        <!-- Date -->
+                                        <div>   <p><?php echo $tweet->getDate(); ?></p>   </div>
+                                    </div>
+
+                                    <!-- le texte du tweet -->
+                                    <div class="tweetText">   
+                                        <p><?php echo $tweet->getText(); ?></p>   
+                                    </div>
+
+                                    <!-- Div qui contient les likes et retweets -->
+                                    <div class="tweerLikes">
+                                        <!-- les retweet -->
+                                        <div class="tweerLikes">
+                                            <!-- Boutton pour retweeter -->
+                                            <form action="/rt" method="POST">
+                                                <input type="hidden" name="text" value="<?php echo null ?>">
+                                                <input type="hidden" name="id" value="<?php echo $tweet->getId(); ?>">
+                                                <button type="submit"><i class="fa fa-retweet fa-2x" aria-hidden="true"></i></button>
+                                            </form>
+                                            <!-- Compteur de rt-->
+                                            <p><?php echo $tweet->getNbRt(); ?></p>
+                                        </div>
+
+                                        <!-- les likes -->
+                                        <div class="tweerLikes">
+                                            <!-- boutton pour liker -->
+                                            <form action="/liked" method="POST">
+                                                <input type="hidden" name="id" value="<?php echo $tweet->getId(); ?>">
+                                                <button type="submit"><i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i></button>
+                                            </form>
+                                            <!-- compteur de likes -->
+                                            <p><?php echo $tweet->getLikes(); ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <?php endif ?>
                     </div>
                 <?php endforeach; ?>
             </div>
