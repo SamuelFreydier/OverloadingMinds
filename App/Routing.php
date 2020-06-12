@@ -74,6 +74,8 @@ class Routing
         $this->app->get('/members?search=', [$user, 'userResearchHandler']);
 
         $this->app->get('/members(\w+)', [$user, 'userResearchHandler']);
+        
+        $this->app->get('/members?(\w+)', [$user, 'userResearchHandler']);
 
         $this->app->post('/newfollow', [$user, 'userFollowHandler']);
     }
