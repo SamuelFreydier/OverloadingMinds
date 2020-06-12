@@ -1,1 +1,1 @@
-<?php header("Location: https://overloadingminds.cleverapps.io/"); exit(); ?>
+<?php header("Location: https://overloadingminds.cleverapps.io"); exit(); ?>
