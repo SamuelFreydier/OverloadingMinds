@@ -173,7 +173,6 @@ class UserController extends ControllerBase
     public function userFollowProfileHandler(Request $request) {
         $username = htmlspecialchars($request->getParameters('username'));
         $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
-        $usertofollow = $request->getParameters('userid');
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
         $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
         $user->setFollower($userfollows->getFollower());
