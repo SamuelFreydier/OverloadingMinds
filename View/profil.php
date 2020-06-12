@@ -50,12 +50,12 @@
                     <?php if($params['author'] !== $params['user']->getId()) : ?>
                             <?php if($params['user']->getBoolFollowed() === false) : ?>
                                 <!-- Bouton de follow -->
-                                <form action ="/newfollowprofile" method="POST">
+                                <form action ="/newfollow" method="POST">
                                     <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
                                     <button type="submit" class="memberButton">follow</button>
                                 </form>
                             <?php else: ?>
-                                <form action ="/newfollowprofile" method="POST">
+                                <form action ="/newfollow" method="POST">
                                     <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
                                     <button type="submit" class="memberButton">unfollow</button>
                                 </form>
