@@ -23,7 +23,7 @@ class TweetController extends ControllerBase
             $tweet->setNbRt($tweetrt->getNbRt());
             if($tweet->getRetweet() !== null) {
                 $retweeted = $this->app->getService('tweetFinder')->findOneById($tweet->getRetweet());
-                //var_dump($retweeted);exit();
+                var_dump($retweeted);exit();
                 $retweetlikes = $this->app->getService('tweetFinder')->findOneLikesById($retweeted->getId());
                 $retweeted->setLikes($retweetlikes->getLikes());
                 $retweetedNbRt = $this->app->getService('tweetFinder')->findNbRetweetsById($retweeted->getId());
