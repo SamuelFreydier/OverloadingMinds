@@ -111,10 +111,9 @@ class TweetFinder implements FinderInterface
     }
 
     public function findOneById($id) {
-        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet WHERE t.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t WHERE t.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':id' => $id]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);   
-        var_dump($element); exit();
         if($element === null) return null;
         
         $tweet = new TweetGateway($this->app);
