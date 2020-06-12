@@ -95,7 +95,38 @@ class TweetController extends ControllerBase
         return $this->app->render('formredirection', ['tweets' => $tweets]);
     }
 
+    public function tweetLikeProfileHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
+        $id = $request->getParameters('id');
+        $username = $_SESSION['auth'];
+        $user = $this->app->getService('userFinder')->findOneById($request->getParameters('userid'));
+        $request = [];
+        $userid = $this->app->getService('userFinder')->findOneByUsername($username);
+        $userid = $userid->getId();
+        if($this->app->getService('tweetFinder')->findTweetLiked($id, $username) === null) {
+            $this->app->getService('tweetFinder')->likeTweet($id, $userid);
+        }
+        else {
+            $this->app->getService('tweetFinder')->unlikeTweet($id, $userid);
+        }
 
+        $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
+        $user->setFollower($userfollows->getFollower());
+        if($this->app->getService('userFinder')->isFollowedByCurrent($userid, $user->getId()) === null) {
+            $user->setBoolFollowed(false);
+        }
+        else {
+            $user->setBoolFollowed(true);
+        }
+
+        $tweets = $this->app->getService('tweetFinder')->allTweetsFromUser($user->getId());
+        if(!empty($tweets)) {
+            $tweets = $this->renderTweets($tweets);
+        }
+        return $this->app->render('profileredirection', ['tweets' => $tweets, 'author' => $userid, 'user' => $user]);
+    }
     
 
     public function restaurantsHandler(Request $request)

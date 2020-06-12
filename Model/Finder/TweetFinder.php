@@ -35,6 +35,25 @@ class TweetFinder implements FinderInterface
         return $tweets;
     }
 
+    public function allTweetsFromUser($id) {
+        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t INNER JOIN user u ON u.id = t.author WHERE u.id = :id ORDER BY date DESC');
+        $query->execute([':id' => $id]);
+        $elements = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        if(count($elements) === 0) return null;
+
+        $tweets = [];
+        $tweet = null;
+        foreach($elements as $element) {
+            $tweet = new TweetGateway($this->app);
+            $tweet->hydrate($element);
+
+            $tweets[] = $tweet;
+        }
+
+        return $tweets;
+    }
+
     public function findTweetLiked($id, $username) {
         $query = $this->conn->prepare('SELECT u.username, t.text, t.id FROM tweet t INNER JOIN user_like_tweet ult ON t.id = ult.tweet INNER JOIN user u ON u.id = ult.user WHERE t.id = :id AND u.username = :username');
         $query->execute([

@@ -17,12 +17,14 @@ class UserController extends ControllerBase
         foreach($tweets as $tweet) {
             $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
             $tweet->setAuthor($username->getUsername());
-            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+            $tweetlikes = $this->app->getService('tweetFinder')->findOneLikesById($tweet->getId());
             $tweet->setLikes($tweetlikes->getLikes());
             $tweetrt = $this->app->getService('tweetFinder')->findNbRetweetsById($tweet->getId());
             $tweet->setNbRt($tweetrt->getNbRt());
             if($tweet->getRetweet() !== null) {
                 $retweeted = $this->app->getService('tweetFinder')->findOneById($tweet->getRetweet());
+                $retweetlikes = $this->app->getService('tweetFinder')->findOneLikesById($retweeted->getId());
+                $retweeted->setLikes($retweetlikes->getLikes());
                 $retweetedNbRt = $this->app->getService('tweetFinder')->findNbRetweetsById($retweeted->getId());
                 $retweeted->setNbRt($retweetedNbRt->getNbRt());
                 $retweetuser = $this->app->getService('userFinder')->findOneById($retweeted->getAuthor());
@@ -170,6 +172,48 @@ class UserController extends ControllerBase
         return $this->app->render('memberredirection', ["users" => $users, "author" => $author, "search" => $search]);
     }
 
+    public function userFollowProfileHandler(Request $request) {
+        $username = htmlspecialchars($request->getParameters('username'));
+        $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
+        $usertofollow = $request->getParameters('userid');
+        $user = $this->app->getService('userFinder')->findOneByUsername($username);
+        $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
+        $user->setFollower($userfollows->getFollower());
+        $author = htmlspecialchars($_SESSION['auth']);
+        $author = ($this->app->getService('userFinder')->findOneByUsername($author))->getId();
+        if($this->app->getService('userFinder')->isFollowedByCurrent($author, $user->getId()) === null) {
+            $this->app->getService('userFinder')->follow($author, $user->getId());
+        }
+        else {
+            $this->app->getService('userFinder')->unfollow($author, $user->getId());
+        }
+        
+        $tweets = $this->app->getService('tweetFinder')->allTweetsFromUser($user->getId());
+        if(!empty($tweets)) {
+            $tweets = $this->renderTweets($tweets);
+        }
+        return $this->app->render('profileredirection', ["user" => $user, "author" => $author]);
+    }
+
+    public function userProfileHandler(Request $request, $username) {
+        $username = htmlspecialchars($username);
+        $user = $this->app->getService('userFinder')->findOneByUsername($username);
+        $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
+        $user->setFollower($userfollows->getFollower());
+        $author = htmlspecialchars($_SESSION['auth']);
+        $author = ($this->app->getService('userFinder')->findOneByUsername($author))->getId();
+        if($this->app->getService('userFinder')->isFollowedByCurrent($author, $user->getId()) === null) {
+            $user->setBoolFollowed(false);
+        }
+        else {
+            $user->setBoolFollowed(true);
+        }
+        $tweets = $this->app->getService('tweetFinder')->allTweetsFromUser($user->getId());
+        if(!empty($tweets)) {
+            $tweets = $this->renderTweets($tweets);
+        }
+        return $this->app->render('profil', ['user' => $user, 'tweets' => $tweets, 'author' => $author]);
+    }
 
 
     public function restaurantsHandler(Request $request)

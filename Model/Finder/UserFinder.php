@@ -51,7 +51,7 @@ class UserFinder implements FinderInterface
 
     public function findOneByUsername($username)
     {
-        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email FROM user u WHERE u.username = :username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email, COUNT(ufu.userfollowed) AS userfollowed FROM user u INNER JOIN user_follow_user ufu ON ufu.userfollowed = u.id WHERE u.username = :username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':username' => $username]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);
         if($element === false) return null;

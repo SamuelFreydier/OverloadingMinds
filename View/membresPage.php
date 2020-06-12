@@ -20,7 +20,7 @@
         </div>
 
         <!-- Bon ba la c'est juste le nom du site -->
-        <h1 style="color: #F9F8E6;">Overloading Minds</h1>
+        <h1 style="color: #F9F8E6;"><a href="/">Overloading Minds</a></h1>
         <!-- Partie avec la bar de recherche -->
         <div id="search_container">
             <!-- J'ai mis dans un "form" mais je sait pas si ca change qque chose avec le php -->
@@ -47,11 +47,11 @@
                         <!-- Div pour la pp et le bouton follow -->
                         <div id="ProfilInfoPic" >
                             <!-- La pp-->
-                            <img src="../ressources/pp.jpg" class="profilPic" style="height: 80px; width: 80px;"/>
+                            <a href="/user/<?php echo $user->getUsername(); ?>"><img src="../ressources/pp.jpg" class="profilPic" style="height: 80px; width: 80px;"/></a>
                         </div>
                         <!-- div avec le texte du profil -->
                         <div id="profilInfoText">
-                            <p><b><?php echo $user->getUsername(); ?></b></p>
+                            <p><b><a href="/user/<?php echo $user->getUsername(); ?>"><?php echo $user->getUsername(); ?></a></b></p>
                             <p><?php echo $user->getBio(); ?></p>
                             <!-- div avec les follow et tout -->
                             <div class="profilInfoStats">

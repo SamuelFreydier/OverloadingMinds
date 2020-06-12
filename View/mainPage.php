@@ -17,15 +17,15 @@
         <!-- Partie avec l'image et le bouton "profil" -->
         <div id="profilContainer">
             <!-- L'image est a l'interieur d'une balise <a> comme ca si on clique dessu ca renvoie sur le profil -->
-            <a href="#"><img src="../ressources/pp.jpg" class="profilPic"/></a>
-            <a href="#" style="color: #F9F8E6; text-decoration: none;">
+            <a href="/user/<?php echo $_SESSION['auth'] ?>"><img src="../ressources/pp.jpg" class="profilPic"/></a>
+            <a href="/user/<?php echo $_SESSION['auth'] ?>" style="color: #F9F8E6; text-decoration: none;">
             <?php if(session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['auth'])) {
                 echo $_SESSION['auth'];
             } ?> </a>
         </div>
 
         <!-- Bon ba la c'est juste le nom du site -->
-        <h1 style="color: #F9F8E6;">Overloading Minds</h1>
+        <h1 style="color: #F9F8E6;"><a href="/">Overloading Minds</a></h1>
 
         <!-- Partie avec la bar de recherche -->
         <div id="search_container">
@@ -83,14 +83,14 @@
                             <!-- Code generique des tweets -->
                             <div class="tweetContainer">
                                 <!-- Image du profil avec un <a> pour cliquer sur la photo -->
-                                <a href="#"><img src="../ressources/pp.jpg" class="profilPic"/></a>
+                                <a href="/user/<?php echo $tweet->getRetweet()->getAuthor(); ?>"><img src="../ressources/pp.jpg" class="profilPic"/></a>
 
                                 <!-- Partie principale du tweet -->
                                 <div class="tweetBody">
                                     <!-- Div avec le Username et la date du poste -->
                                     <div class="tweetInfo">
                                         <!-- Username -->
-                                        <div>   <p><b><?php echo $tweet->getRetweet()->getAuthor(); ?></b></p>   </div>
+                                        <div>   <p><b><a href="/user/<?php echo $tweet->getRetweet()->getAuthor(); ?>"><?php echo $tweet->getRetweet()->getAuthor(); ?></a></b></p>   </div>
                                         <!-- Date -->
                                         <div>   <p><?php echo $tweet->getRetweet()->getDate(); ?></p>   </div>
                                     </div>
@@ -133,14 +133,14 @@
                             <!-- Code generique des tweets -->
                             <div class="tweetContainer">
                                 <!-- Image du profil avec un <a> pour cliquer sur la photo -->
-                                <a href="#"><img src="../ressources/pp.jpg" class="profilPic"/></a>
+                                <a href="/user/<?php echo $tweet->getAuthor(); ?>"><img src="../ressources/pp.jpg" class="profilPic"/></a>
 
                                 <!-- Partie principale du tweet -->
                                 <div class="tweetBody">
                                     <!-- Div avec le Username et la date du poste -->
                                     <div class="tweetInfo">
                                         <!-- Username -->
-                                        <div>   <p><b><?php echo $tweet->getAuthor(); ?></b></p>   </div>
+                                        <div>   <p><b><a href="/user/<?php echo $tweet->getAuthor(); ?>"><?php echo $tweet->getAuthor(); ?></a></b></p>   </div>
                                         <!-- Date -->
                                         <div>   <p><?php echo $tweet->getDate(); ?></p>   </div>
                                     </div>
