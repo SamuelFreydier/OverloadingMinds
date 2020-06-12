@@ -66,5 +66,11 @@ class Routing
         $this->app->post('/liked', [$tweet, 'tweetLikeHandler']);
 
         $this->app->post('/rt', [$tweet, 'newTweetHandler']);
+        
+        $this->app->get('/members', [$user, 'userResearchHandler']);
+        
+        $this->app->get('/members/(\d+)', [$user, 'userResearchHandler']);
+
+        $this->app->post('/newfollow', [$user, 'userFollowHandler']);
     }
 }

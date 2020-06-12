@@ -14,6 +14,10 @@ class UserGateway
     private $bio;
     private $email;
 
+    private $follower;
+    private $userfollowed;
+    private $boolfollowed;
+
     public function __construct(App $app)
     {
         $this->conn = $app->getService('database')->getConnection();
@@ -53,6 +57,30 @@ class UserGateway
 
     public function getEmail() {
         return $this->email;
+    }
+
+    public function getUserFollowed() {
+        return $this->userfollowed;
+    }
+
+    public function setUserFollowed($userfollowed) {
+        $this->userfollowed = $userfollowed;
+    }
+
+    public function setFollower($follower) {
+        $this->follower = $follower;
+    }
+
+    public function getFollower() {
+        return $this->follower;
+    }
+
+    public function setBoolFollowed($bool) {
+        $this->boolfollowed = $bool;
+    }
+
+    public function getBoolFollowed() {
+        return $this->boolfollowed;
     }
 
     public function insert() : void {
@@ -97,5 +125,11 @@ class UserGateway
         $this->password = $element['password'];
         $this->bio = $element['bio'];
         $this->email = $element['email'];
+        if(isset($element['userfollowed'])) {
+            $this->userfollowed = $element['userfollowed'];
+        }
+        if(isset($element['follower'])) {
+            $this->follower = $element['follower'];
+        };
     }
 }

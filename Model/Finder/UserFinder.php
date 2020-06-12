@@ -38,9 +38,9 @@ class UserFinder implements FinderInterface
 
     public function findOneById($id)
     {
-        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email FROM user u WHERE u.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email, COUNT(ufu.userfollowed) AS userfollowed FROM user u INNER JOIN user_follow_user ufu ON ufu.userfollowed = u.id WHERE u.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':id' => $id]); // Exécution de la requête
-        $element = $query->fetch(\PDO::FETCH_ASSOC);   
+        $element = $query->fetch(\PDO::FETCH_ASSOC);
         if($element === null) return null;
         
         $user = new UserGateway($this->app);
@@ -62,24 +62,43 @@ class UserFinder implements FinderInterface
         return $user;
     }
 
-    public function search($searchString) : array
-    {
-        $query = $this->conn->prepare('SELECT c.id, c.name, c.country, c.life FROM city c WHERE c.name like :search ORDER BY c.name'); // Création de la requête + utilisation order by pour ne pas utiliser sort
-        $query->execute([':search' => '%' . $searchString .  '%']); // Exécution de la requête
-        $elements = $query->fetchAll(\PDO::FETCH_ASSOC);
+    public function findFollows($id) {
+        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email, COUNT(ufu.follower) AS follower FROM user u INNER JOIN user_follow_user ufu ON ufu.follower = u.id WHERE u.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query->execute([':id' => $id]); // Exécution de la requête
+        $element = $query->fetch(\PDO::FETCH_ASSOC);
+        if($element === false) return null;
+        
+        $user = new UserGateway($this->app);
+        $user->hydrate($element);
 
-        if(count($elements) === 0) return null;
+        return $user;
+    }
 
-        $cities=[];
-        $city=null;
-        foreach($elements as $element) {
-            $city = new UserGateway($this->app);
-            $city->hydrate($element);
+    public function isFollowedByCurrent($currentuser, $followeduser) {
+        $query = $this->conn->prepare('SELECT u.id FROM user u INNER JOIN user_follow_user ufu ON ufu.userfollowed = u.id WHERE ufu.userfollowed = :followeduser AND ufu.follower = :currentuser');
+        $query->execute([
+            ':currentuser' => $currentuser,
+            ':followeduser' => $followeduser
+            ]); // Exécution de la requête
+        $element = $query->fetch(\PDO::FETCH_ASSOC);
+        if($element === false) return null;
+        else return 1;
+    }
 
-            $cities[] = $city;
-        }
+    public function follow($currentuser, $followeduser) {
+        $query = $this->conn->prepare('INSERT INTO user_follow_user (follower, userfollowed) VALUES (:currentuser, :followeduser)'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        return $query->execute([
+            ':currentuser' => $currentuser,
+            ':followeduser'=> $followeduser
+        ]);
+    }
 
-        return $cities;
+    public function unfollow($currentuser, $followeduser) {
+        $query = $this->conn->prepare('DELETE FROM user_follow_user WHERE follower = :currentuser AND userfollowed = :followeduser'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        return $query->execute([
+            ':currentuser' => $currentuser,
+            ':followeduser'=> $followeduser
+        ]);
     }
 
     public function save(array $user) : bool
@@ -92,5 +111,27 @@ class UserFinder implements FinderInterface
         ]);
     }
 
+
+    public function search($searchString)
+    {
+        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email FROM user u WHERE u.username like :search ORDER BY u.username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query->execute([':search' => '%' . $searchString .  '%']); // Exécution de la requête
+        $elements = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        if(count($elements) === 0) return null;
+
+        $users = [];
+        $user = null;
+        foreach($elements as $element) {
+            $user = new UserGateway($this->app);
+            $user->hydrate($element);
+
+            $users[] = $user;
+        }
+
+        return $users;
+    }
+
+    
     
 }

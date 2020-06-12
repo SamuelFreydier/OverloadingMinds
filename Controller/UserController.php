@@ -122,6 +122,56 @@ class UserController extends ControllerBase
         return $this->app->render('formredirection', ["tweets" => $tweets, "flash" => $flash]);
     }
 
+    public function userResearchHandler(Request $request) {
+        $search = "";
+        if(isset($_GET['search'])) {
+            $search = htmlspecialchars($_GET['search']);
+        }
+        $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
+        $users = $this->app->getService('userFinder')->search($search);
+        foreach($users as $user) {
+            $userfollowed = $this->app->getService('userFinder')->findOneById($user->getId());
+            $user->setUserFollowed($userfollowed->getUserFollowed());
+            $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
+            $user->setFollower($userfollows->getFollower());
+            if($this->app->getService('userFinder')->isFollowedByCurrent($author, $user->getId()) === null) {
+                $user->setBoolFollowed(false);
+            }
+            else {
+                $user->setBoolFollowed(true);
+            }
+        }
+        return $this->app->render('membresPage', ["users" => $users, "author" => $author, "search" => $search]);
+    }
+
+    public function userFollowHandler(Request $request) {
+        $search = $request->getParameters('search');
+        $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
+        $usertofollow = $request->getParameters('userid');
+        if($this->app->getService('userFinder')->isFollowedByCurrent($author, $usertofollow) === null) {
+            $this->app->getService('userFinder')->follow($author, $usertofollow);
+        }
+        else {
+            $this->app->getService('userFinder')->unfollow($author, $usertofollow);
+        }
+        $users = $this->app->getService('userFinder')->search($search);
+        foreach($users as $user) {
+            $userfollowed = $this->app->getService('userFinder')->findOneById($user->getId());
+            $user->setUserFollowed($userfollowed->getUserFollowed());
+            $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
+            $user->setFollower($userfollows->getFollower());
+            if($this->app->getService('userFinder')->isFollowedByCurrent($author, $user->getId()) === null) {
+                $user->setBoolFollowed(false);
+            }
+            else {
+                $user->setBoolFollowed(true);
+            }
+        }
+        return $this->app->render('memberredirection', ["users" => $users, "author" => $author, "search" => $search]);
+    }
+
+
+
     public function restaurantsHandler(Request $request)
     {
         $restaurants = $this->app->getService('restaurantFinder')->findAll();
