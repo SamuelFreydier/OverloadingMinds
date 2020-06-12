@@ -70,7 +70,6 @@ class App
         $uri = $request->getUri();
         var_dump($uri);
         var_dump($method);
-        exit();
         foreach($this->routes as $route) {
             if($route->match($method, $uri)) {
                 return $this->process($route, $request);
