@@ -17,13 +17,15 @@ class TweetController extends ControllerBase
         foreach($tweets as $tweet) {
             $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
             $tweet->setAuthor($username->getUsername());
-            $tweetlikes = $this->app->getService('tweetFinder')->findOneById($tweet->getId());
+            $tweetlikes = $this->app->getService('tweetFinder')->findOneLikesById($tweet->getId());
             $tweet->setLikes($tweetlikes->getLikes());
             $tweetrt = $this->app->getService('tweetFinder')->findNbRetweetsById($tweet->getId());
             $tweet->setNbRt($tweetrt->getNbRt());
             if($tweet->getRetweet() !== null) {
                 $retweeted = $this->app->getService('tweetFinder')->findOneById($tweet->getRetweet());
-                var_dump($retweeted);exit();
+                //var_dump($retweeted);exit();
+                $retweetlikes = $this->app->getService('tweetFinder')->findOneLikesById($retweeted->getId());
+                $retweeted->setLikes($retweetlikes->getLikes());
                 $retweetedNbRt = $this->app->getService('tweetFinder')->findNbRetweetsById($retweeted->getId());
                 $retweeted->setNbRt($retweetedNbRt->getNbRt());
                 $retweetuser = $this->app->getService('userFinder')->findOneById($retweeted->getAuthor());
