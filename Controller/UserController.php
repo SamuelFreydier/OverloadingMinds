@@ -64,13 +64,12 @@ class UserController extends ControllerBase
         $passwordconf = $request->getParameters('passwordconf');
 
         if($password != $passwordconf || empty($email) || empty($username) || empty($password)) {
-            $flash = "NON";
             header('Location: https://overloadingminds.cleverapps.io/signup');
             exit();
         }
 
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
-        if($user != null) {
+        if($user->getId() !== null) {
             header('Location: https://overloadingminds.cleverapps.io/signup');
             exit();
         }
@@ -88,7 +87,6 @@ class UserController extends ControllerBase
             header('Location: https://overloadingminds.cleverapps.io/signup');
             exit();
         }
-        $cities = $this->app->getService('cityFinder')->findAll();
         session_start();
         $_SESSION['auth'] = $username;
         $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
