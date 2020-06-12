@@ -122,7 +122,7 @@ class UserController extends ControllerBase
         return $this->app->render('formredirection', ["tweets" => $tweets, "flash" => $flash]);
     }
 
-    public function userResearchHandler(Request $request, $search) {
+    public function userResearchHandler(Request $request) {
         $search = "";
         if(isset($_GET['search'])) {
             $search = htmlspecialchars($_GET['search']);
