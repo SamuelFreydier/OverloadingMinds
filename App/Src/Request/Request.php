@@ -34,6 +34,11 @@ class Request
 
     public function getUri() {
         $uri = $_SERVER['REQUEST_URI'] ?? '/';
+
+        if($pos = strpos($uri, '?')) {
+            $uri = substr($uri, 0, $pos);
+        }
+        
         return $uri;
     }
 }
