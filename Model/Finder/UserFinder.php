@@ -41,7 +41,6 @@ class UserFinder implements FinderInterface
         $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email FROM user u WHERE u.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':id' => $id]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);   
-        
         if($element === null) return null;
         
         $user = new UserGateway($this->app);

@@ -23,6 +23,7 @@ class TweetController extends ControllerBase
             $tweet->setNbRt($tweetrt->getNbRt());
             if($tweet->getRetweet() !== null) {
                 $retweeted = $this->app->getService('tweetFinder')->findOneById($tweet->getRetweet());
+                var_dump($retweeted);exit();
                 $retweetedNbRt = $this->app->getService('tweetFinder')->findNbRetweetsById($retweeted->getId());
                 $retweeted->setNbRt($retweetedNbRt->getNbRt());
                 $retweetuser = $this->app->getService('userFinder')->findOneById($retweeted->getAuthor());
@@ -44,7 +45,7 @@ class TweetController extends ControllerBase
         return $this->app->render('mainPage', ["tweets" => $tweets]);
     }
 
-    public function newTweethandler(Request $request) {
+    public function newTweetHandler(Request $request) {
         if(!isset($_SESSION['auth'])) {
             return $this->app->render('loginredirection');
         }
