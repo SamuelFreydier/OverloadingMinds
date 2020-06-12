@@ -40,49 +40,51 @@
 
         <!-- Div qui contient le profil du User -->
         <div id="timeline">
-            <?php foreach($params['users'] as $user): ?>
-                <!-- div qui contient le profil -->
-                <div class="memberProfilInfo">
-                    <!-- Div pour la pp et le bouton follow -->
-                    <div id="ProfilInfoPic" >
-                        <!-- La pp-->
-                        <img src="../ressources/pp.jpg" class="profilPic" style="height: 80px; width: 80px;"/>
-                    </div>
-                    <!-- div avec le texte du profil -->
-                    <div id="profilInfoText">
-                        <p><b><?php echo $user->getUsername(); ?></b></p>
-                        <p><?php echo $user->getBio(); ?></p>
-                        <!-- div avec les follow et tout -->
-                        <div class="profilInfoStats">
+            <?php if(!empty($params['users'])) : ?>
+                <?php foreach($params['users'] as $user): ?>
+                    <!-- div qui contient le profil -->
+                    <div class="memberProfilInfo">
+                        <!-- Div pour la pp et le bouton follow -->
+                        <div id="ProfilInfoPic" >
+                            <!-- La pp-->
+                            <img src="../ressources/pp.jpg" class="profilPic" style="height: 80px; width: 80px;"/>
+                        </div>
+                        <!-- div avec le texte du profil -->
+                        <div id="profilInfoText">
+                            <p><b><?php echo $user->getUsername(); ?></b></p>
+                            <p><?php echo $user->getBio(); ?></p>
+                            <!-- div avec les follow et tout -->
                             <div class="profilInfoStats">
-                                <p><?php echo $user->getFollower(); ?></p>
-                                <p>abonnements</p>
-                            </div>
-                            <div class="profilInfoStats">
-                                <p><?php echo $user->getUserFollowed(); ?></p>
-                                <p>abonnés</p>
+                                <div class="profilInfoStats">
+                                    <p><?php echo $user->getFollower(); ?></p>
+                                    <p>abonnements</p>
+                                </div>
+                                <div class="profilInfoStats">
+                                    <p><?php echo $user->getUserFollowed(); ?></p>
+                                    <p>abonnés</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <?php if($params['author'] !== $user->getId()) : ?>
-                        <?php if($user->getBoolFollowed() === false) : ?>
-                            <!-- Bouton de follow -->
-                            <form action ="/newfollow" method="POST">
-                                <input type="hidden" name="search" value="<?php echo $params['search']; ?>">
-                                <input type="hidden" name="userid" value="<?php echo $user->getId(); ?>">
-                                <button type="submit" class="memberButton">follow</button>
-                            </form>
-                        <?php else: ?>
-                            <form action ="/newfollow" method="POST">
-                                <input type="hidden" name="search" value="<?php echo $params['search'] ?>">
-                                <input type="hidden" name="userid" value="<?php echo $user->getId(); ?>">
-                                <button type="submit" class="memberButton">unfollow</button>
-                            </form>
+                        <?php if($params['author'] !== $user->getId()) : ?>
+                            <?php if($user->getBoolFollowed() === false) : ?>
+                                <!-- Bouton de follow -->
+                                <form action ="/newfollow" method="POST">
+                                    <input type="hidden" name="search" value="<?php echo $params['search']; ?>">
+                                    <input type="hidden" name="userid" value="<?php echo $user->getId(); ?>">
+                                    <button type="submit" class="memberButton">follow</button>
+                                </form>
+                            <?php else: ?>
+                                <form action ="/newfollow" method="POST">
+                                    <input type="hidden" name="search" value="<?php echo $params['search'] ?>">
+                                    <input type="hidden" name="userid" value="<?php echo $user->getId(); ?>">
+                                    <button type="submit" class="memberButton">unfollow</button>
+                                </form>
+                            <?php endif; ?>
                         <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-                <!-- fin du profil -->
-            <?php endforeach; ?>
+                    </div>
+                    <!-- fin du profil -->
+                <?php endforeach; ?>
+            <?php endif; ?>
              
         </div>
 

@@ -68,14 +68,6 @@ class Routing
         $this->app->post('/rt', [$tweet, 'newTweetHandler']);
 
         $this->app->get('/members', [$user, 'userResearchHandler']);
-        
-        $this->app->get('/members?search=(\w+)', [$user, 'userResearchHandler']);
-
-        $this->app->get('/members?search=', [$user, 'userResearchHandler']);
-
-        $this->app->get('/members(\w+)', [$user, 'userResearchHandler']);
-        
-        $this->app->get('/members?(\w+)', [$user, 'userResearchHandler']);
 
         $this->app->post('/newfollow', [$user, 'userFollowHandler']);
     }
