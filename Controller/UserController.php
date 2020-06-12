@@ -210,7 +210,6 @@ class UserController extends ControllerBase
         if(!empty($tweets)) {
             $tweets = $this->renderTweets($tweets);
         }
-        var_dump($user);
         return $this->app->render('profil', ['user' => $user, 'tweets' => $tweets, 'author' => $author]);
     }
 
