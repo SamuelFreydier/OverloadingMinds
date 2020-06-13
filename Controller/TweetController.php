@@ -114,7 +114,7 @@ class TweetController extends ControllerBase
             return $this->app->render('loginredirection');
         }
         $id = $request->getParameters('id');
-        $username = $_SESSION['auth'];
+        $username = htmlspecialchars($_SESSION['auth']);
         $user = $this->app->getService('userFinder')->findOneById($request->getParameters('userid'));
         $request = [];
         $userid = $this->app->getService('userFinder')->findOneByUsername($username);
@@ -142,6 +142,20 @@ class TweetController extends ControllerBase
         return $this->app->render('profileredirection', ['tweets' => $tweets, 'author' => $userid, 'user' => $user]);
     }
     
+    public function deleteTweetHandler(Request $request) {
+        $tweetid = $request->getParameters('tweetid');
+        $this->app->getService('tweetFinder')->deleteTweet($tweetid);
+        $this->app->render('formredirection');
+    }
+
+    public function deleteTweetHandlerProfile(Request $request) {
+        $tweetid = $request->getParameters('tweetid');
+        $user =  $this->app->getService('userFinder')->findOneById($request->getParameters('userid'));
+        $this->app->getService('tweetFinder')->deleteTweet($tweetid);
+        $this->app->render('profileredirection', ['user' => $user]);
+    }
+
+
 
     public function restaurantsHandler(Request $request)
     {

@@ -81,7 +81,13 @@ class Routing
 
         $this->app->post('/editbio', [$user, 'userEditHandler']);
 
+        $this->app->get('/logout', [$user, 'userLogout']);
 
+        $this->app->post('/deletetweet', [$tweet, 'deleteTweetHandler']);
+
+        $this->app->post('/deletetweetprofile', [$tweet, 'deleteTweetHandlerProfile']);
+
+        
 
 
         $this->app->get('/404', [$user, 'display404']);

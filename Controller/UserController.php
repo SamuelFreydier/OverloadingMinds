@@ -71,7 +71,7 @@ class UserController extends ControllerBase
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
         if($user !== null) {
             if($user->getId() !== null) {
-                header('Location: https://overloadingminds.cleverapps.io/signup');
+                header('Location: hhttps://overloadingminds.cleverapps.io/signup');
                 exit();
             }
         }
@@ -131,16 +131,18 @@ class UserController extends ControllerBase
         }
         $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
         $users = $this->app->getService('userFinder')->search($search);
-        foreach($users as $user) {
-            $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($user->getUsername());
-            $user->setUserFollowed($userfollowed->getUserFollowed());
-            $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
-            $user->setFollower($userfollows->getFollower());
-            if($this->app->getService('userFinder')->isFollowedByCurrent($author, $user->getId()) === null) {
-                $user->setBoolFollowed(false);
-            }
-            else {
-                $user->setBoolFollowed(true);
+        if(!empty($users)) {
+            foreach($users as $user) {
+                $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($user->getUsername());
+                $user->setUserFollowed($userfollowed->getUserFollowed());
+                $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
+                $user->setFollower($userfollows->getFollower());
+                if($this->app->getService('userFinder')->isFollowedByCurrent($author, $user->getId()) === null) {
+                    $user->setBoolFollowed(false);
+                }
+                else {
+                    $user->setBoolFollowed(true);
+                }
             }
         }
         return $this->app->render('membresPage', ["users" => $users, "author" => $author, "search" => $search]);
@@ -200,10 +202,10 @@ class UserController extends ControllerBase
     public function userProfileHandler(Request $request, $username) {
         $username = htmlspecialchars($username);
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
-        $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($username);
         if($user === null) {
             return $this->app->render('404');
         }
+        $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($username);
         $user->setUserFollowed($userfollowed->getUserFollowed());
         $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
         $user->setFollower($userfollows->getFollower());
@@ -250,6 +252,11 @@ class UserController extends ControllerBase
             $user->setBoolFollowed(true);
         }
         return $this->app->render('profileredirection', ["user" => $user, "author" => $author]);
+    }
+
+    public function userLogout(Request $request) {
+        session_destroy();
+        return $this->app->render('loginredirection');
     }
 
     public function display404(Request $request) {

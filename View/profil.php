@@ -27,10 +27,11 @@
             <!-- J'ai mis dans un "form" mais je sait pas si ca change qque chose avec le php -->
             <form action="/members" method="GET">
                 <!-- l'input est de type texte, c'est la ou l'utilisateur va ecrire. je sait pas si il falait mettre des trucs en plus pour le php -->
-                <input type="text" name="search" placeholder="Search..">
+                <input type="text" name="search" placeholder="Recherche...">
                 <!-- encore une fois je sait pas si il falait mettre des truc pour le php dans le boutton -->
                 <button type="search"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
+            <a href="/logout"><button>Déconnexion</button></a>
         </div>
     </div>
 
@@ -123,6 +124,13 @@
                             
                                         <!-- Div qui contient les likes et retweets -->
                                         <div class="tweerLikes">
+                                            <?php if($tweet->getRetweet()->getAuthor() === $_SESSION['auth']): ?>
+                                                <form action="/deletetweetprofile" method="POST">
+                                                    <input type="hidden" name="userid" value="<?php echo $params['user']->getId(); ?>">
+                                                    <input type="hidden" name="tweetid" value="<?php echo $tweet->getId(); ?>">
+                                                    <button type="submit">Supprimer</button>
+                                                </form>
+                                            <?php endif; ?>
                                             <!-- les retweet -->
                                             <div class="tweerLikes">
                                                 <!-- Boutton pour retweeter -->
@@ -174,6 +182,13 @@
                             
                                         <!-- Div qui contient les likes et retweets -->
                                         <div class="tweerLikes">
+                                            <?php if($tweet->getAuthor() === $_SESSION['auth']): ?>
+                                                <form action="/deletetweetprofile" method="POST">
+                                                    <input type="hidden" name="userid" value="<?php echo $params['user']->getId(); ?>">
+                                                    <input type="hidden" name="tweetid" value="<?php echo $tweet->getId(); ?>">
+                                                    <button type="submit">Supprimer</button>
+                                                </form>
+                                            <?php endif; ?>
                                             <!-- les retweet -->
                                             <div class="tweerLikes">
                                                 <!-- Boutton pour retweeter -->

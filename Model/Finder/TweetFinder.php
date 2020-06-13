@@ -111,6 +111,15 @@ class TweetFinder implements FinderInterface
         
     }
 
+    public function deleteTweet($tweetid) {
+        $query = $this->conn->prepare('DELETE FROM user_like_tweet WHERE tweet = :tweetid;
+                                       DELETE FROM tweet WHERE retweet = :tweetid;
+                                       DELETE FROM tweet WHERE id = :tweetid');
+        return $query->execute([
+            ':tweetid' => $tweetid
+        ]);
+    }
+
     public function findAll()
     {
         $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t ORDER BY t.date'); // Création de la requête + utilisation order by pour ne pas utiliser sort

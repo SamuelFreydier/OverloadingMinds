@@ -26,10 +26,11 @@
             <!-- J'ai mis dans un "form" mais je sait pas si ca change qque chose avec le php -->
             <form action="/members" method="GET">
                 <!-- l'input est de type texte, c'est la ou l'utilisateur va ecrire. je sait pas si il falait mettre des trucs en plus pour le php -->
-                <input type="text" name="search" placeholder="Search..">
+                <input type="text" name="search" placeholder="Recherche...">
                 <!-- encore une fois je sait pas si il falait mettre des truc pour le php dans le boutton -->
                 <button type="search"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
+            <a href="/logout"><button>Déconnexion</button></a>
         </div>
     </div>
 

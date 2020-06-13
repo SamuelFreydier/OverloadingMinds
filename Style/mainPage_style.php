@@ -42,7 +42,20 @@ body{
     align-items: center;
 }
 
+#topMenu #search_container{
+    display: flex;
+}
+
 #topMenu #search_container button{
+    padding: 6px 10px;
+    margin-right: 2vw;
+    background: #F9F8E6;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+}
+
+#topMenu #search_container form button{
     float: right;
     padding: 6px 10px;
     margin-right: 2vw;
@@ -240,7 +253,7 @@ content{
     #timeline  { width: 60vw; } 
 }
 
-@media screen and (max-width: 703px){
+@media screen and (max-width: 786px){
     .sideBlocks{ width: 5vw;  }
     #timeline  { 
         width: 70vw;

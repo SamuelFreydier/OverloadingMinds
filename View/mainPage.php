@@ -32,10 +32,11 @@
             <!-- J'ai mis dans un "form" mais je sait pas si ca change qque chose avec le php -->
             <form action="/members" method="GET">
                 <!-- l'input est de type texte, c'est la ou l'utilisateur va ecrire. je sait pas si il falait mettre des trucs en plus pour le php -->
-                <input type="text" name="search" placeholder="Search..">
+                <input type="text" name="search" placeholder="Recherche...">
                 <!-- encore une fois je sait pas si il falait mettre des truc pour le php dans le boutton -->
                 <button type="search"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
+            <a href="/logout"><button>Déconnexion</button></a>
         </div>
     </div>
 
@@ -55,10 +56,10 @@
                 <div id="tweetPost">
                     <!-- Textarea simple, il faut sans doute rajouter des trucs pour le php -->
                     <form action="/" method="POST">
-                        <textarea placeholder="What's up ?" name="text"></textarea>
+                        <textarea placeholder="Quoi de neuf ?" name="text"></textarea>
 
                         <!-- Boutton simple aussi -->
-                        <button type="submit">post</button>
+                        <button type="submit">Envoyer</button>
                     </form>
                 </div>
             </div>
@@ -68,23 +69,23 @@
 
                 <?php if(!empty($params['tweets'])): ?>
                     <?php foreach ($params['tweets'] as $tweet) : ?>
-                    
+
                         <div>
                             <?php if ($tweet->getRetweet() !== null): ?>
                                 <!-- div pour afficher qui a rt -->
                                 <div class="tweetMainContainer">
                                     <!-- icone de rt (a supprimer si aucun rt) -->
                                     <i class="fa fa-retweet" aria-hidden="true"></i>
-                            
+
                                     <!-- Qui a rt (a supprimer si aucun rt) -->
                                     <p><?php echo $tweet->getAuthor(); ?> a retweeté</p>
                                 </div>
-                            
+
                                 <!-- Code generique des tweets -->
                                 <div class="tweetContainer">
                                     <!-- Image du profil avec un <a> pour cliquer sur la photo -->
                                     <a href="/user/<?php echo $tweet->getRetweet()->getAuthor(); ?>"><img src="../ressources/pp.jpg" class="profilPic"/></a>
-                            
+
                                     <!-- Partie principale du tweet -->
                                     <div class="tweetBody">
                                         <!-- Div avec le Username et la date du poste -->
@@ -94,14 +95,20 @@
                                             <!-- Date -->
                                             <div>   <p><?php echo $tweet->getRetweet()->getDate(); ?></p>   </div>
                                         </div>
-                            
+
                                         <!-- le texte du tweet -->
                                         <div class="tweetText">   
                                             <p><?php echo $tweet->getRetweet()->getText(); ?></p>   
                                         </div>
-                            
+
                                         <!-- Div qui contient les likes et retweets -->
                                         <div class="tweerLikes">
+                                            <?php if($tweet->getRetweet()->getAuthor() === $_SESSION['auth']): ?>
+                                                <form action="/deletetweet" method="POST">
+                                                    <input type="hidden" name="tweetid" value="<?php echo $tweet->getRetweet()->getId(); ?>">
+                                                    <button type="submit">Supprimer</button>
+                                                </form>
+                                            <?php endif; ?>
                                             <!-- les retweet -->
                                             <div class="tweerLikes">
                                                 <!-- Boutton pour retweeter -->
@@ -113,7 +120,7 @@
                                                 <!-- Compteur de rt-->
                                                 <p><?php echo $tweet->getRetweet()->getNbRt(); ?></p>
                                             </div>
-                            
+
                                             <!-- les likes -->
                                             <div class="tweerLikes">
                                                 <!-- boutton pour liker -->
@@ -126,15 +133,15 @@
                                             </div>
                                         </div>
                                     </div>
-                            
+
                                 </div>
-                            
+
                             <?php else: ?>
                                 <!-- Code generique des tweets -->
                                 <div class="tweetContainer">
                                     <!-- Image du profil avec un <a> pour cliquer sur la photo -->
                                     <a href="/user/<?php echo $tweet->getAuthor(); ?>"><img src="../ressources/pp.jpg" class="profilPic"/></a>
-                            
+
                                     <!-- Partie principale du tweet -->
                                     <div class="tweetBody">
                                         <!-- Div avec le Username et la date du poste -->
@@ -144,14 +151,20 @@
                                             <!-- Date -->
                                             <div>   <p><?php echo $tweet->getDate(); ?></p>   </div>
                                         </div>
-                            
+
                                         <!-- le texte du tweet -->
                                         <div class="tweetText">   
                                             <p><?php echo $tweet->getText(); ?></p>   
                                         </div>
-                            
+
                                         <!-- Div qui contient les likes et retweets -->
                                         <div class="tweerLikes">
+                                            <?php if($tweet->getAuthor() === $_SESSION['auth']): ?>
+                                                <form action="/deletetweet" method="POST">
+                                                    <input type="hidden" name="tweetid" value="<?php echo $tweet->getId(); ?>">
+                                                    <button type="submit">Supprimer</button>
+                                                </form>
+                                            <?php endif; ?>
                                             <!-- les retweet -->
                                             <div class="tweerLikes">
                                                 <!-- Boutton pour retweeter -->
@@ -163,7 +176,7 @@
                                                 <!-- Compteur de rt-->
                                                 <p><?php echo $tweet->getNbRt(); ?></p>
                                             </div>
-                            
+
                                             <!-- les likes -->
                                             <div class="tweerLikes">
                                                 <!-- boutton pour liker -->
@@ -176,7 +189,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            
+
                                 </div>
                             <?php endif ?>
                         </div>
