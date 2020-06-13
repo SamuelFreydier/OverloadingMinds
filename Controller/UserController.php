@@ -247,7 +247,9 @@ class UserController extends ControllerBase
         return $this->app->render('profileredirection', ["user" => $user, "author" => $author]);
     }
 
-
+    public function display404(Request $request) {
+        return $this->app->render('404');
+    }
 
 
 

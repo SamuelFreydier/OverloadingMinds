@@ -80,5 +80,10 @@ class Routing
         $this->app->get('/editprofile', [$user, 'userEditFormHandler']);
 
         $this->app->post('/editbio', [$user, 'userEditHandler']);
+
+
+
+
+        $this->app->get('/404', [$user, 'display404']);
     }
 }

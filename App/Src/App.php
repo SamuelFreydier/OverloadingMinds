@@ -73,7 +73,12 @@ class App
                 return $this->process($route, $request);
             }
         }
-
+        $uri = "/404";
+        foreach($this->routes as $route) {
+            if($route->match($method, $uri)) {
+                return $this->process($route, $request);
+            }
+        }
         throw new \Error('No routes available for this uri');
     }
 
