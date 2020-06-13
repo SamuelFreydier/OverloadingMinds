@@ -16,7 +16,7 @@
         <div id="profilContainer">
             <!-- L'image est a l'interieur d'une balise <a> comme ca si on clique dessu ca renvoie sur le profil -->
             <a href="/" style="color: #F9F8E6; height: 30px;"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-            <a href="/" style="color: #F9F8E6; text-decoration: none;">return</a>
+            <a href="/" style="color: #F9F8E6; text-decoration: none;">Retour</a>
         </div>
 
         <!-- Bon ba la c'est juste le nom du site -->
@@ -53,12 +53,12 @@
                                 <!-- Bouton de follow -->
                                 <form action ="/newfollowprofile" method="POST">
                                     <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
-                                    <button type="submit" class="memberButton">follow</button>
+                                    <button type="submit" class="memberButton">Suivre</button>
                                 </form>
                             <?php else: ?>
                                 <form action ="/newfollowprofile" method="POST">
                                     <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
-                                    <button type="submit" class="memberButton">unfollow</button>
+                                    <button type="submit" class="memberButton">Ne plus suivre</button>
                                 </form>
                             <?php endif; ?>
                     <?php endif; ?>
@@ -69,7 +69,7 @@
                     <p><b><?php echo $params['user']->getUsername(); ?></b></p>
                     <p><?php echo $params['user']->getBio(); ?></p>
                     <?php if($params['user']->getId() === $params['author']): ?>
-                        <a href="/editprofile"><button type="submit" class="memberButton">Edit profile</button></a>
+                        <a href="/editprofile"><button type="submit" class="memberButton">Éditer le profil</button></a>
                     <?php endif; ?>
                     <!-- div avec les follow et tout -->
                     <div class="profilInfoStats">

@@ -143,12 +143,18 @@ class TweetController extends ControllerBase
     }
     
     public function deleteTweetHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $tweetid = $request->getParameters('tweetid');
         $this->app->getService('tweetFinder')->deleteTweet($tweetid);
         $this->app->render('formredirection');
     }
 
     public function deleteTweetHandlerProfile(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $tweetid = $request->getParameters('tweetid');
         $user =  $this->app->getService('userFinder')->findOneById($request->getParameters('userid'));
         $this->app->getService('tweetFinder')->deleteTweet($tweetid);

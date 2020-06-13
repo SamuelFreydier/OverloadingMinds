@@ -17,11 +17,11 @@
         
         <form id="login_box" style="height :46vh" action ='/created' method='POST'>
             <div><input type="email" name="email" placeholder="e-mail"></div>
-            <div><input type="text" name="username" placeholder="username"></div>
-            <div><input type="password" name="password" placeholder="password"></div>
-            <div><input type="password" name="passwordconf" placeholder="confirm password"></div>
-            <button type="submit">Create account</button>
-            <a href="/login">Cancel</a>
+            <div><input type="text" name="username" placeholder="nom d'utilisateur"></div>
+            <div><input type="password" name="password" placeholder="mot de passe"></div>
+            <div><input type="password" name="passwordconf" placeholder="confirmer le mot de passe"></div>
+            <button type="submit">Créer un compte</button>
+            <a href="/login">Annuler</a>
         </form>
 
         <div id="Image_BottomLeft"></div>

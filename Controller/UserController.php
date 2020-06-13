@@ -71,7 +71,7 @@ class UserController extends ControllerBase
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
         if($user !== null) {
             if($user->getId() !== null) {
-                header('Location: hhttps://overloadingminds.cleverapps.io/signup');
+                header('Location: https://overloadingminds.cleverapps.io/signup');
                 exit();
             }
         }
@@ -125,6 +125,9 @@ class UserController extends ControllerBase
     }
 
     public function userResearchHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $search = "";
         if(isset($_GET['search'])) {
             $search = htmlspecialchars($_GET['search']);
@@ -149,6 +152,9 @@ class UserController extends ControllerBase
     }
 
     public function userFollowHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $search = $request->getParameters('search');
         $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
         $usertofollow = $request->getParameters('userid');
@@ -175,6 +181,9 @@ class UserController extends ControllerBase
     }
 
     public function userFollowProfileHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $username = htmlspecialchars($request->getParameters('username'));
         $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
@@ -200,6 +209,9 @@ class UserController extends ControllerBase
     }
 
     public function userProfileHandler(Request $request, $username) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $username = htmlspecialchars($username);
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
         if($user === null) {
@@ -225,11 +237,17 @@ class UserController extends ControllerBase
     }
 
     public function userEditFormHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $username = htmlspecialchars($_SESSION['auth']);
         return $this->app->render('edit', ['auth' => $username]);
     }
 
     public function userEditHandler(Request $request) {
+        if(!isset($_SESSION['auth'])) {
+            return $this->app->render('loginredirection');
+        }
         $username = htmlspecialchars($_SESSION['auth']);
         $bio = htmlspecialchars($request->getParameters('bio'));
         if(strlen($bio) > 250) {

@@ -16,11 +16,11 @@
         <h1 id="Title">OVERLOADING <br>MINDS</h1>
         
         <form id="login_box" action="/loginfinished" method="POST">
-            <div><input type="text" name="username" placeholder="username" value="<?php if(isset($user)) echo $user['username']; ?>"></div>
-            <div><input type="password" name="password" placeholder="password"></div>
-            <a href="#"">forgot the password ?</a>
-            <button type="submit">log in</button>
-            <a href="/signup">sign up</a>
+            <div><input type="text" name="username" placeholder="nom d'utilisateur" value="<?php if(isset($user)) echo $user['username']; ?>"></div>
+            <div><input type="password" name="password" placeholder="mot de passe"></div>
+            <a href="#"">Mot de passe oublié ?</a>
+            <button type="submit">Connexion</button>
+            <a href="/signup">S'inscrire</a>
         </form>
 
         <div id="Image_BottomLeft"></div>

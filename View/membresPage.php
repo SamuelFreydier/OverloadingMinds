@@ -16,7 +16,7 @@
         <div id="profilContainer">
             <!-- L'image est a l'interieur d'une balise <a> comme ca si on clique dessu ca renvoie sur le profil -->
             <a href="/" style="color: #F9F8E6; height: 30px;"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-            <a href="/" style="color: #F9F8E6; text-decoration: none;">return</a>
+            <a href="/" style="color: #F9F8E6; text-decoration: none;">Retour</a>
         </div>
 
         <!-- Bon ba la c'est juste le nom du site -->
@@ -72,13 +72,13 @@
                                 <form action ="/newfollow" method="POST">
                                     <input type="hidden" name="search" value="<?php echo $params['search']; ?>">
                                     <input type="hidden" name="userid" value="<?php echo $user->getId(); ?>">
-                                    <button type="submit" class="memberButton">follow</button>
+                                    <button type="submit" class="memberButton">Suivre</button>
                                 </form>
                             <?php else: ?>
                                 <form action ="/newfollow" method="POST">
                                     <input type="hidden" name="search" value="<?php echo $params['search'] ?>">
                                     <input type="hidden" name="userid" value="<?php echo $user->getId(); ?>">
-                                    <button type="submit" class="memberButton">unfollow</button>
+                                    <button type="submit" class="memberButton">Ne plus suivre</button>
                                 </form>
                             <?php endif; ?>
                         <?php endif; ?>
