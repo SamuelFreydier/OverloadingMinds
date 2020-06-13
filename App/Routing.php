@@ -76,5 +76,9 @@ class Routing
         $this->app->post('/newfollowprofile', [$user, 'userFollowProfileHandler']);
 
         $this->app->get('/user/(\w+)', [$user, 'userProfileHandler']);
+
+        $this->app->get('/editprofile', [$user, 'userEditFormHandler']);
+
+        $this->app->post('/editbio', [$user, 'userEditHandler']);
     }
 }

@@ -101,6 +101,7 @@ class UserController extends ControllerBase
         $password = $request->getParameters('password');
 
         $result = $this->app->getService('userFinder')->findOneByUsername($username);
+        $cities = $this->app->getService('cityFinder')->findAll();
         if($result === null) {
             $flash = "NON";
             header('Location: https://overloadingminds.cleverapps.io/login');
@@ -190,6 +191,7 @@ class UserController extends ControllerBase
         if(!empty($tweets)) {
             $tweets = $this->renderTweets($tweets);
         }
+
         return $this->app->render('profileredirection', ["user" => $user, "author" => $author]);
     }
 
@@ -214,6 +216,40 @@ class UserController extends ControllerBase
         }
         return $this->app->render('profil', ['user' => $user, 'tweets' => $tweets, 'author' => $author]);
     }
+
+    public function userEditFormHandler(Request $request) {
+        $username = htmlspecialchars($_SESSION['auth']);
+        return $this->app->render('edit', ['auth' => $username]);
+    }
+
+    public function userEditHandler(Request $request) {
+        $username = htmlspecialchars($_SESSION['auth']);
+        $bio = htmlspecialchars($request->getParameters('bio'));
+        if(strlen($bio) > 250) {
+            header('Location: https://overloadingminds.cleverapps.io/editprofile');
+            exit();
+        }
+        $request = [];
+        $this->app->getService('userFinder')->updateBio($username, $bio);
+        $user = $this->app->getService('userFinder')->findOneByUsername($username);
+        $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($username);
+        $user->setUserFollowed($userfollowed->getUserFollowed());
+        $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
+        $user->setFollower($userfollows->getFollower());
+        $author = htmlspecialchars($_SESSION['auth']);
+        $author = ($this->app->getService('userFinder')->findOneByUsername($author))->getId();
+        if($this->app->getService('userFinder')->isFollowedByCurrent($author, $user->getId()) === null) {
+            $user->setBoolFollowed(false);
+        }
+        else {
+            $user->setBoolFollowed(true);
+        }
+        return $this->app->render('profileredirection', ["user" => $user, "author" => $author]);
+    }
+
+
+
+
 
 
     public function restaurantsHandler(Request $request)

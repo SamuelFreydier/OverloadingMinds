@@ -124,6 +124,14 @@ class UserFinder implements FinderInterface
         ]);
     }
 
+    public function updateBio($username, $bio) {
+        $query = $this->conn->prepare('UPDATE user SET bio = :bio WHERE username = :username');
+        return $query->execute([
+            ':bio' => $bio,
+            ':username' => $username
+        ]);
+    }
+
 
     public function search($searchString)
     {

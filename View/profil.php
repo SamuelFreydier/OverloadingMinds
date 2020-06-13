@@ -67,7 +67,9 @@
                 <div id="profilInfoText">
                     <p><b><?php echo $params['user']->getUsername(); ?></b></p>
                     <p><?php echo $params['user']->getBio(); ?></p>
-
+                    <?php if($params['user']->getId() === $params['author']): ?>
+                        <a href="/editprofile"><button type="submit" class="memberButton">Edit profile</button></a>
+                    <?php endif; ?>
                     <!-- div avec les follow et tout -->
                     <div class="profilInfoStats">
                         <div class="profilInfoStats">
