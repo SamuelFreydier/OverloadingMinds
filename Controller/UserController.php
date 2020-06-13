@@ -174,6 +174,8 @@ class UserController extends ControllerBase
         $username = htmlspecialchars($request->getParameters('username'));
         $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
+        $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($username);
+        $user->setUserFollowed($userfollowed->getUserFollowed());
         $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
         $user->setFollower($userfollows->getFollower());
         $author = htmlspecialchars($_SESSION['auth']);
@@ -195,6 +197,8 @@ class UserController extends ControllerBase
     public function userProfileHandler(Request $request, $username) {
         $username = htmlspecialchars($username);
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
+        $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($username);
+        $user->setUserFollowed($userfollowed->getUserFollowed());
         $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
         $user->setFollower($userfollows->getFollower());
         $author = htmlspecialchars($_SESSION['auth']);
