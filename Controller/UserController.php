@@ -69,9 +69,11 @@ class UserController extends ControllerBase
         }
 
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
-        if($user->getId() !== null) {
-            header('Location: https://overloadingminds.cleverapps.io/signup');
-            exit();
+        if($user !== null) {
+            if($user->getId() !== null) {
+                header('Location: https://overloadingminds.cleverapps.io/signup');
+                exit();
+            }
         }
         $passwordhashed = password_hash($password, PASSWORD_DEFAULT);
 
