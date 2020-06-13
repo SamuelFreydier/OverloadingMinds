@@ -201,6 +201,9 @@ class UserController extends ControllerBase
         $username = htmlspecialchars($username);
         $user = $this->app->getService('userFinder')->findOneByUsername($username);
         $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($username);
+        if($user === null) {
+            return $this->app->render('404');
+        }
         $user->setUserFollowed($userfollowed->getUserFollowed());
         $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
         $user->setFollower($userfollows->getFollower());
