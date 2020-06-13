@@ -42,7 +42,9 @@ class TweetController extends ControllerBase
         $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
         $author = $author->getId();
         $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
-        $tweets = $this->renderTweets($tweets);
+        if(!empty($tweets)) {
+            $tweets = $this->renderTweets($tweets);
+        }
         return $this->app->render('mainPage', ["tweets" => $tweets]);
     }
 
@@ -50,18 +52,28 @@ class TweetController extends ControllerBase
         if(!isset($_SESSION['auth'])) {
             return $this->app->render('loginredirection');
         }
+        $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
+        $author = $author->getId();
         $text = $request->getParameters('text');
         $retweet = null;
         if($request->getParameters('id') !== null) {
             $retweet = $request->getParameters('id');
         }
         $request = [];
+
+        if($retweet !== null) { 
+            if($this->app->getService('tweetFinder')->findRetweet($retweet, $author) === true) {
+                $this->app->getService('tweetFinder')->deleteRetweet($retweet, $author);
+                $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
+                $tweets = $this->renderTweets($tweets);
+                return $this->app->render('formredirection', ['tweets' => $tweets]);
+            }
+        }
+
         if(strlen($text) > 140) {
             return $this->app->render('mainPage');
         }
 
-        $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
-        $author = $author->getId();
         $date = date("Y-m-d H:i:s");
         $tweet = [
             "text" => $text,
@@ -70,6 +82,8 @@ class TweetController extends ControllerBase
             "retweet" => $retweet
         ];
         $this->app->getService('tweetFinder')->save($tweet);
+
+
         $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
         $tweets = $this->renderTweets($tweets);
         return $this->app->render('formredirection', ['tweets' => $tweets]);

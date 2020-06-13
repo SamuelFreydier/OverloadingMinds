@@ -87,12 +87,28 @@ class TweetFinder implements FinderInterface
         ]);
     }
 
-    public function rtTweet($tweetid, $userid) {
-        $query = $this->conn->prepare('DELETE ult FROM user_like_tweet ult WHERE ult.user = :user AND ult.tweet = :tweet');
-        return $query->execute([
-            ':tweet' => $tweetid,
-            ':user' => $userid
+    public function findRetweet($tweetid, $userid) {
+        $query = $this->conn->prepare('SELECT t.id FROM tweet t WHERE t.author = :userid AND t.retweet = :tweetid');
+        $query->execute([
+            ':tweetid' => $tweetid,
+            ':userid' => $userid
         ]);
+        $element = $query->fetch(\PDO::FETCH_ASSOC);
+        if(empty($element)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public function deleteRetweet($tweetid, $userid) {
+        $query = $this->conn->prepare('DELETE t FROM tweet t WHERE t.author = :userid AND t.retweet = :tweetid');
+        return $query->execute([
+            ':tweetid' => $tweetid,
+            ':userid' => $userid
+        ]);
+        
     }
 
     public function findAll()
