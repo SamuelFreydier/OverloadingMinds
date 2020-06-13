@@ -28,7 +28,7 @@ class UserController extends ControllerBase
                 $retweetedNbRt = $this->app->getService('tweetFinder')->findNbRetweetsById($retweeted->getId());
                 $retweeted->setNbRt($retweetedNbRt->getNbRt());
                 $retweetuser = $this->app->getService('userFinder')->findOneById($retweeted->getAuthor());
-                $retweeted->setAuthor(["username" => $retweetuser->getUsername(), "image" => $retweetuser->getImg()]);
+                $retweeted->setAuthor(["username" => $retweetuser->getUsername(), "img" => $retweetuser->getImg()]);
                 $tweet->setRetweet($retweeted);
             }
         }

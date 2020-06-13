@@ -88,7 +88,7 @@
 
             <!-- Div qui contient tout les tweet -->
             <div style=" background-color: #F9F8E6;">
-                <?php if(!empty($params['tweets'])): ?>                
+                <?php if(!empty($params['tweets'])): ?>
                     <?php foreach ($params['tweets'] as $tweet) : ?>
 
                         <div>

@@ -143,7 +143,7 @@ class UserFinder implements FinderInterface
 
     public function search($searchString)
     {
-        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email FROM user u WHERE u.username like :search ORDER BY u.username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT u.id, u.username, u.password, u.bio, u.email, u.img FROM user u WHERE u.username like :search ORDER BY u.username'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':search' => '%' . $searchString .  '%']); // Exécution de la requête
         $elements = $query->fetchAll(\PDO::FETCH_ASSOC);
 
