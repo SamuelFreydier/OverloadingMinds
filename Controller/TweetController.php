@@ -16,7 +16,7 @@ class TweetController extends ControllerBase
     public function renderTweets($tweets) {
         foreach($tweets as $tweet) {
             $username = $this->app->getService('userFinder')->findOneById($tweet->getAuthor());
-            $tweet->setAuthor($username->getUsername());
+            $tweet->setAuthor(["username" => $username->getUsername(), "img" => $username->getImg()]);
             $tweetlikes = $this->app->getService('tweetFinder')->findOneLikesById($tweet->getId());
             $tweet->setLikes($tweetlikes->getLikes());
             $tweetrt = $this->app->getService('tweetFinder')->findNbRetweetsById($tweet->getId());
@@ -28,7 +28,7 @@ class TweetController extends ControllerBase
                 $retweetedNbRt = $this->app->getService('tweetFinder')->findNbRetweetsById($retweeted->getId());
                 $retweeted->setNbRt($retweetedNbRt->getNbRt());
                 $retweetuser = $this->app->getService('userFinder')->findOneById($retweeted->getAuthor());
-                $retweeted->setAuthor($retweetuser->getUsername());
+                $retweeted->setAuthor(["username" => $retweetuser->getUsername(), "img" => $retweetuser->getImg()]);
                 $tweet->setRetweet($retweeted);
             }
         }

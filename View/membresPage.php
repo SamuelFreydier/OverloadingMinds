@@ -48,7 +48,7 @@
                         <!-- Div pour la pp et le bouton follow -->
                         <div id="ProfilInfoPic" >
                             <!-- La pp-->
-                            <a href="/user/<?php echo $user->getUsername(); ?>"><img src="../ressources/pp.jpg" class="profilPic" style="height: 80px; width: 80px;"/></a>
+                            <a href="/user/<?php echo $user->getUsername(); ?>"><img src="<?php echo $user->getImg(); ?>" class="profilPic" style="height: 80px; width: 80px;"/></a>
                         </div>
                         <!-- div avec le texte du profil -->
                         <div id="profilInfoText">
