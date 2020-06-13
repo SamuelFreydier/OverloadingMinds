@@ -130,7 +130,7 @@ class UserController extends ControllerBase
         $author = ($this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']))->getId();
         $users = $this->app->getService('userFinder')->search($search);
         foreach($users as $user) {
-            $userfollowed = $this->app->getService('userFinder')->findOneById($user->getId());
+            $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($user->getUsername());
             $user->setUserFollowed($userfollowed->getUserFollowed());
             $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
             $user->setFollower($userfollows->getFollower());
