@@ -101,7 +101,6 @@ class UserController extends ControllerBase
         $password = $request->getParameters('password');
 
         $result = $this->app->getService('userFinder')->findOneByUsername($username);
-        $cities = $this->app->getService('cityFinder')->findAll();
         if($result === null) {
             $flash = "NON";
             header('Location: https://overloadingminds.cleverapps.io/login');
