@@ -40,12 +40,11 @@ class TweetController extends ControllerBase
             return $this->app->render('loginredirection');
         }
         $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
-        $author = $author->getId();
-        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
+        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author->getId());
         if(!empty($tweets)) {
             $tweets = $this->renderTweets($tweets);
         }
-        return $this->app->render('mainPage', ["tweets" => $tweets]);
+        return $this->app->render('mainPage', ["tweets" => $tweets, "author" => $author]);
     }
 
     public function newTweetHandler(Request $request) {

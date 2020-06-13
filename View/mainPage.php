@@ -17,7 +17,7 @@
         <!-- Partie avec l'image et le bouton "profil" -->
         <div id="profilContainer">
             <!-- L'image est a l'interieur d'une balise <a> comme ca si on clique dessu ca renvoie sur le profil -->
-            <a href="/user/<?php echo $_SESSION['auth'] ?>"><img src="../ressources/pp.jpg" class="profilPic"/></a>
+            <a href="/user/<?php echo $_SESSION['auth'] ?>"><img src="<?php echo $params['author']->getImg(); ?>" class="profilPic"/></a>
             <a href="/user/<?php echo $_SESSION['auth'] ?>" style="color: #F9F8E6; text-decoration: none;">
             <?php if(session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['auth'])) {
                 echo $_SESSION['auth'];
@@ -50,7 +50,7 @@
             <!-- Div qui contient toute la partie pour ecrire un tweet-->
             <div id="tweetBox">
                 <!-- Image a coté de la boite pour ecrire le tweet -->
-                <img src="../Ressources/pp.jpg" class="profilPic"/>
+                <img src="<?php echo $params['author']->getImg(); ?>" class="profilPic"/>
 
                 <!-- Div qui contient la boite de texte et le boutton pour poster -->
                 <div id="tweetPost">
@@ -84,7 +84,7 @@
                                 <!-- Code generique des tweets -->
                                 <div class="tweetContainer">
                                     <!-- Image du profil avec un <a> pour cliquer sur la photo -->
-                                    <a href="/user/<?php echo $tweet->getRetweet()->getAuthor(); ?>"><img src="../ressources/pp.jpg" class="profilPic"/></a>
+                                    <a href="/user/<?php echo $tweet->getRetweet()->getAuthor(); ?>"><img src="<?php echo $params['author']->getImg(); ?>" class="profilPic"/></a>
 
                                     <!-- Partie principale du tweet -->
                                     <div class="tweetBody">

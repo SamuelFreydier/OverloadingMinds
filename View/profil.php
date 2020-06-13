@@ -46,7 +46,7 @@
                 <!-- Div pour la pp et le bouton follow -->
                 <div id="ProfilInfoPic">
                     <!-- La pp-->
-                    <img src="../ressources/pp.jpg" class="profilPic" style="height: 120px; width: 120px;"/>
+                    <img src="<?php echo $params['user']->getImg(); ?>" class="profilPic" style="height: 120px; width: 120px;"/>
                     <!-- Je sait pas comment faire le le unfollow, sans doute juste changer le texte -->
                     <?php if($params['author'] !== $params['user']->getId()) : ?>
                             <?php if($params['user']->getBoolFollowed() === false) : ?>
@@ -105,7 +105,7 @@
                                 <!-- Code generique des tweets -->
                                 <div class="tweetContainer">
                                     <!-- Image du profil avec un <a> pour cliquer sur la photo -->
-                                    <a href="/user/<?php echo $tweet->getRetweet()->getAuthor(); ?>"><img src="../ressources/pp.jpg" class="profilPic"/></a>
+                                    <a href="/user/<?php echo $tweet->getRetweet()->getAuthor(); ?>"><img src="<?php echo $params['user']->getImg(); ?>" class="profilPic"/></a>
                             
                                     <!-- Partie principale du tweet -->
                                     <div class="tweetBody">

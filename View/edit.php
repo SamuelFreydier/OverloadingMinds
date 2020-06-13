@@ -37,6 +37,10 @@
     <content>
         <div style="width: 30vw; height: 100%;"> </div>
             <div id="timeline">
+                <form action="/editimg" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="img">
+                    <button type="submit">Save</button>
+                </form>
                 <form action="/editbio" method="POST">
                     <textarea placeholder="New bio" name="bio"></textarea>
                     <button type="submit">Save</button>

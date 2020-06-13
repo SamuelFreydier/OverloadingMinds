@@ -18,6 +18,8 @@ class UserGateway
     private $userfollowed;
     private $boolfollowed;
 
+    private $img;
+
     public function __construct(App $app)
     {
         $this->conn = $app->getService('database')->getConnection();
@@ -83,6 +85,10 @@ class UserGateway
         return $this->boolfollowed;
     }
 
+    public function getImg() {
+        return $this->img;
+    }
+
     public function insert() : void {
         $query = $this->conn->prepare('INSERT INTO user (username, password) VALUES (:username, :password)');
         $executed = $query->execute([
@@ -130,6 +136,9 @@ class UserGateway
         }
         if(isset($element['follower'])) {
             $this->follower = $element['follower'];
-        };
+        }
+        if(isset($element['img'])) {
+            $this->img = $element['img'];
+        }
     }
 }

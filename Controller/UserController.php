@@ -272,6 +272,35 @@ class UserController extends ControllerBase
         return $this->app->render('profileredirection', ["user" => $user, "author" => $author]);
     }
 
+    public function userEditAvatar(Request $request) {
+        $username = htmlspecialchars($_SESSION['auth']);
+        $img = $_FILES['img'];
+        $ext = strtolower(substr($img['name'], -3));
+        $allow_ext = array("jpg", "png", "gif");
+        if(in_array($ext, $allow_ext)) {
+            $path = "../Ressources/Images/" . $username . "." . $ext;
+            move_uploaded_file($img['tmp_name'], $path);
+            $this->app->getService('userFinder')->updateImg($username, $path);
+        }
+        else {
+            $erreur = "Votre fichier n'est pas une image.";
+        }
+        $user = $this->app->getService('userFinder')->findOneByUsername($username);
+        $userfollowed = $this->app->getService('userFinder')->findOneUserFollowed($username);
+        $user->setUserFollowed($userfollowed->getUserFollowed());
+        $userfollows = $this->app->getService('userFinder')->findFollows($user->getId());
+        $user->setFollower($userfollows->getFollower());
+        $author = htmlspecialchars($_SESSION['auth']);
+        $author = ($this->app->getService('userFinder')->findOneByUsername($author))->getId();
+        if($this->app->getService('userFinder')->isFollowedByCurrent($author, $user->getId()) === null) {
+            $user->setBoolFollowed(false);
+        }
+        else {
+            $user->setBoolFollowed(true);
+        }
+        return $this->app->render('profileredirection', ["user" => $user]);
+    }
+
     public function userLogout(Request $request) {
         session_destroy();
         return $this->app->render('loginredirection');

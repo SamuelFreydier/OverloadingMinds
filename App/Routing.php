@@ -87,7 +87,7 @@ class Routing
 
         $this->app->post('/deletetweetprofile', [$tweet, 'deleteTweetHandlerProfile']);
 
-        
+        $this->app->post('/editimg', [$user, 'userEditAvatar']);
 
 
         $this->app->get('/404', [$user, 'display404']);
