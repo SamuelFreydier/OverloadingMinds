@@ -53,7 +53,7 @@ class TweetController extends ControllerBase
         }
         $author = $this->app->getService('userFinder')->findOneByUsername($_SESSION['auth']);
         $author = $author->getId();
-        $text = $request->getParameters('text');
+        $text = htmlspecialchars($request->getParameters('text'));
         $retweet = null;
         if($request->getParameters('id') !== null) {
             $retweet = $request->getParameters('id');

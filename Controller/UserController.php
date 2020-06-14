@@ -63,7 +63,7 @@ class UserController extends ControllerBase
         $password = htmlspecialchars($request->getParameters('password'));
         $passwordconf = htmlspecialchars($request->getParameters('passwordconf'));
 
-        if($password != $passwordconf || empty($email) || empty($username) || empty($password)) {
+        if($password != $passwordconf || empty($email) || empty($username) || empty($password) || strlen($username) > 25) {
             header('Location: https://overloadingminds.cleverapps.io/signup');
             exit();
         }
