@@ -58,12 +58,17 @@ class UserController extends ControllerBase
     }
 
     public function userSignupHandler(Request $request) {
-        $username = $request->getParameters('username');
-        $email = $request->getParameters('email');
-        $password = $request->getParameters('password');
-        $passwordconf = $request->getParameters('passwordconf');
+        $username = htmlspecialchars($request->getParameters('username'));
+        $email = htmlspecialchars($request->getParameters('email'));
+        $password = htmlspecialchars($request->getParameters('password'));
+        $passwordconf = htmlspecialchars($request->getParameters('passwordconf'));
 
         if($password != $passwordconf || empty($email) || empty($username) || empty($password)) {
+            header('Location: https://overloadingminds.cleverapps.io/signup');
+            exit();
+        }
+
+        if($username !== str_replace(" ", "", $username)) {
             header('Location: https://overloadingminds.cleverapps.io/signup');
             exit();
         }
@@ -99,9 +104,9 @@ class UserController extends ControllerBase
     }
 
     public function userLoginHandler(Request $request) {
-        $username = $request->getParameters('username');
-        $password = $request->getParameters('password');
-
+        $username = htmlspecialchars($request->getParameters('username'));
+        $password = htmlspecialchars($request->getParameters('password'));
+        var_dump($username);
         $result = $this->app->getService('userFinder')->findOneByUsername($username);
         $cities = $this->app->getService('cityFinder')->findAll();
         if($result === null) {

@@ -49,18 +49,20 @@
                     <img src="<?php echo $params['user']->getImg(); ?>" class="profilPic" style="height: 120px; width: 120px;"/>
                     <!-- Je sait pas comment faire le le unfollow, sans doute juste changer le texte -->
                     <?php if($params['author'] !== $params['user']->getId()) : ?>
-                            <?php if($params['user']->getBoolFollowed() === false) : ?>
-                                <!-- Bouton de follow -->
-                                <form action ="/newfollowprofile" method="POST">
-                                    <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
-                                    <button type="submit" class="memberButton">Suivre</button>
-                                </form>
-                            <?php else: ?>
-                                <form action ="/newfollowprofile" method="POST">
-                                    <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
-                                    <button type="submit" class="memberButton">Ne plus suivre</button>
-                                </form>
-                            <?php endif; ?>
+                        <?php if($params['user']->getBoolFollowed() === false) : ?>
+                            <!-- Bouton de follow -->
+                            <form action ="/newfollowprofile" method="POST">
+                                <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
+                                <button type="submit" class="memberButton">Suivre</button>
+                            </form>
+                        <?php else: ?>
+                            <form action ="/newfollowprofile" method="POST">
+                                <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
+                                <button type="submit" class="memberButton">Ne plus suivre</button>
+                            </form>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <a href="/editprofile"><button type="submit" class="memberButton">Éditer le profil</button></a>
                     <?php endif; ?>
                 </div>
                 
@@ -68,9 +70,7 @@
                 <div id="profilInfoText">
                     <p><b><?php echo $params['user']->getUsername(); ?></b></p>
                     <p><?php echo $params['user']->getBio(); ?></p>
-                    <?php if($params['user']->getId() === $params['author']): ?>
-                        <a href="/editprofile"><button type="submit" class="memberButton">Éditer le profil</button></a>
-                    <?php endif; ?>
+                    
                     <!-- div avec les follow et tout -->
                     <div class="profilInfoStats">
                         <div class="profilInfoStats">
