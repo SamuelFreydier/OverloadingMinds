@@ -73,6 +73,7 @@ class TweetController extends ControllerBase
             return $this->app->render('mainPage');
         }
 
+        
         $date = date("Y-m-d H:i:s");
         $tweet = [
             "text" => $text,
@@ -82,6 +83,17 @@ class TweetController extends ControllerBase
         ];
         $this->app->getService('tweetFinder')->save($tweet);
 
+        if($retweet === null) {
+            $lasttweetid = $this->app->getService('tweetFinder')->findLastTweet();
+            $img = $_FILES['img'];
+            $ext = strtolower(substr($img['name'], -3));
+            $allow_ext = array("jpg", "png", "gif");
+            if(in_array($ext, $allow_ext)) {
+                $path = "../Ressources/Images/Tweets/" . $lasttweetid->getId() . "." . $ext;
+                move_uploaded_file($img['tmp_name'], $path);
+                $this->app->getService('tweetFinder')->updateImg($lasttweetid->getId(), $path);
+            }
+        }
 
         $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author);
         $tweets = $this->renderTweets($tweets);
@@ -146,6 +158,8 @@ class TweetController extends ControllerBase
             return $this->app->render('loginredirection');
         }
         $tweetid = $request->getParameters('tweetid');
+        $tweet = $this->app->getService('tweetFinder')->findOneById($tweetid);
+        unlink($tweet->getImg());
         $this->app->getService('tweetFinder')->deleteTweet($tweetid);
         $this->app->render('formredirection');
     }
@@ -155,6 +169,8 @@ class TweetController extends ControllerBase
             return $this->app->render('loginredirection');
         }
         $tweetid = $request->getParameters('tweetid');
+        $tweet = $this->app->getService('tweetFinder')->findOneById($tweetid);
+        unlink($tweet->getImg());
         $user =  $this->app->getService('userFinder')->findOneById($request->getParameters('userid'));
         $this->app->getService('tweetFinder')->deleteTweet($tweetid);
         $this->app->render('profileredirection', ['user' => $user]);

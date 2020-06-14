@@ -121,6 +121,10 @@
                                         <div class="tweetText">   
                                             <p><?php echo $tweet->getRetweet()->getText(); ?></p>   
                                         </div>
+
+                                        <?php if($tweet->getRetweet()->getImg() !== null): ?>
+                                            <img src="<?php echo $tweet->getRetweet()->getImg(); ?>">
+                                        <?php endif; ?>
                             
                                         <!-- Div qui contient les likes et retweets -->
                                         <div class="tweerLikes">
@@ -179,6 +183,10 @@
                                         <div class="tweetText">   
                                             <p><?php echo $tweet->getText(); ?></p>   
                                         </div>
+
+                                        <?php if($tweet->getImg() !== null): ?>
+                                            <img src="<?php echo $tweet->getImg(); ?>">
+                                        <?php endif; ?>
                             
                                         <!-- Div qui contient les likes et retweets -->
                                         <div class="tweerLikes">

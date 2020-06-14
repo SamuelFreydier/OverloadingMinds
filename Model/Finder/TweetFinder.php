@@ -17,7 +17,7 @@ class TweetFinder implements FinderInterface
     }
 
     public function findTweetToDisplay($id) {
-        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t INNER JOIN user u ON u.id = t.author INNER JOIN user_follow_user ufu ON u.id = ufu.userfollowed WHERE ufu.follower = :id UNION SELECT t.id ,t.text, t.date, t.author, t.retweet FROM tweet t INNER JOIN user u ON u.id = t.author WHERE u.id = :id ORDER BY date DESC');
+        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet, t.img FROM tweet t INNER JOIN user u ON u.id = t.author INNER JOIN user_follow_user ufu ON u.id = ufu.userfollowed WHERE ufu.follower = :id UNION SELECT t.id ,t.text, t.date, t.author, t.retweet, t.img FROM tweet t INNER JOIN user u ON u.id = t.author WHERE u.id = :id ORDER BY date DESC');
         $query->execute([':id' => $id]);
         $elements = $query->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -36,7 +36,7 @@ class TweetFinder implements FinderInterface
     }
 
     public function allTweetsFromUser($id) {
-        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t INNER JOIN user u ON u.id = t.author WHERE u.id = :id ORDER BY date DESC');
+        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet, t.img FROM tweet t INNER JOIN user u ON u.id = t.author WHERE u.id = :id ORDER BY date DESC');
         $query->execute([':id' => $id]);
         $elements = $query->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -155,7 +155,7 @@ class TweetFinder implements FinderInterface
     }
 
     public function findOneById($id) {
-        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet FROM tweet t WHERE t.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
+        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet, t.img FROM tweet t WHERE t.id = :id'); // Création de la requête + utilisation order by pour ne pas utiliser sort
         $query->execute([':id' => $id]); // Exécution de la requête
         $element = $query->fetch(\PDO::FETCH_ASSOC);   
         if($element === null) return null;
@@ -190,6 +190,26 @@ class TweetFinder implements FinderInterface
         $user->hydrate($elements);
 
         return $user;
+    }
+
+    public function findLastTweet() {
+        $query = $this->conn->prepare('SELECT t.id, t.text, t.date, t.author, t.retweet, t.img FROM tweet t ORDER BY t.id DESC');
+        $query->execute();
+        $element = $query->fetch(\PDO::FETCH_ASSOC);
+        if($element === false) return null;
+
+        $tweet = new TweetGateway($this->app);
+        $tweet->hydrate($element);
+
+        return $tweet;
+    }
+
+    public function updateImg($id, $path) {
+        $query = $this->conn->prepare('UPDATE tweet SET img = :path WHERE id = :id');
+        return $query->execute([
+            ':path' => $path,
+            ':id' => $id
+        ]);
     }
 
     public function save(array $tweet) : bool

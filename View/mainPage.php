@@ -55,9 +55,10 @@
                 <!-- Div qui contient la boite de texte et le boutton pour poster -->
                 <div id="tweetPost">
                     <!-- Textarea simple, il faut sans doute rajouter des trucs pour le php -->
-                    <form action="/" method="POST">
+                    <form action="/" method="POST" enctype="multipart/form-data">
+                        
                         <textarea placeholder="Quoi de neuf ?" name="text"></textarea>
-
+                        <input type="file" name="img">
                         <!-- Boutton simple aussi -->
                         <button type="submit">Envoyer</button>
                     </form>
@@ -100,6 +101,10 @@
                                         <div class="tweetText">   
                                             <p><?php echo $tweet->getRetweet()->getText(); ?></p>   
                                         </div>
+
+                                        <?php if($tweet->getRetweet()->getImg() !== null): ?>
+                                            <img src="<?php echo $tweet->getRetweet()->getImg(); ?>">
+                                        <?php endif; ?>
 
                                         <!-- Div qui contient les likes et retweets -->
                                         <div class="tweerLikes">
@@ -156,6 +161,10 @@
                                         <div class="tweetText">   
                                             <p><?php echo $tweet->getText(); ?></p>   
                                         </div>
+
+                                        <?php if($tweet->getImg() !== null): ?>
+                                            <img src="<?php echo $tweet->getImg(); ?>">
+                                        <?php endif; ?>
 
                                         <!-- Div qui contient les likes et retweets -->
                                         <div class="tweerLikes">

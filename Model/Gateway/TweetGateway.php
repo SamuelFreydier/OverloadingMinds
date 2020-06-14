@@ -16,6 +16,7 @@ class TweetGateway
 
     private $likes;
     private $nbRetweets;
+    private $img;
 
     public function __construct(App $app)
     {
@@ -73,6 +74,15 @@ class TweetGateway
     public function setNbRt($nb) {
         $this->nbRetweets = $nb;
     }
+
+    public function getImg() {
+        return $this->img;
+    }
+
+    public function setImg($img) {
+        $this->img = $img;
+    }
+
     public function insert() : void {
         $query = $this->conn->prepare('INSERT INTO tweet (text, date, author, retweet) VALUES (:text, :date, :author, :retweet)');
         $executed = $query->execute([
@@ -124,6 +134,9 @@ class TweetGateway
         }
         if(isset($element['nbRetweets'])) {
             $this->nbRetweets = $element['nbRetweets'];
+        };
+        if(isset($element['img'])) {
+            $this->img = $element['img'];
         };
     }
 }
