@@ -20,7 +20,7 @@
         </div>
 
         <!-- Bon ba la c'est juste le nom du site -->
-        <h1 style="color: #F9F8E6;"><a href="/">Overloading Minds</a></h1>
+        <h1 style="color: #F9F8E6;"><a href="/" style="color: #F9F8E6;">Overloading Minds</a></h1>
 
         <!-- Partie avec la bar de recherche -->
         <div id="search_container">
@@ -53,16 +53,16 @@
                             <!-- Bouton de follow -->
                             <form action ="/newfollowprofile" method="POST">
                                 <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
-                                <button type="submit" class="memberButton">Suivre</button>
+                                <button type="submit" class="memberButton" style="margin: 0px;">Suivre</button>
                             </form>
                         <?php else: ?>
                             <form action ="/newfollowprofile" method="POST">
                                 <input type="hidden" name="username" value="<?php echo $params['user']->getUsername(); ?>">
-                                <button type="submit" class="memberButton">Ne plus suivre</button>
+                                <button type="submit" class="memberButton" style="margin: 0px;">Ne plus suivre</button>
                             </form>
                         <?php endif; ?>
                     <?php else: ?>
-                        <a href="/editprofile"><button type="submit" class="memberButton">Éditer le profil</button></a>
+                        <a href="/editprofile"><button type="submit" class="memberButton" style="margin: 0px;">Éditer le profil</button></a>
                     <?php endif; ?>
                 </div>
                 

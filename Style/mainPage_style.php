@@ -23,7 +23,7 @@ body{
     width: 100%; 
 }
 
-#topMenu a:first-of-type{
+#topMenu #profilContainer a:first-of-type{
     height: 50px;
     margin-right: 0.5vw;
 }
@@ -44,6 +44,7 @@ body{
 
 #topMenu #search_container{
     display: flex;
+    align-items: center;
 }
 
 #topMenu #search_container button{
@@ -92,13 +93,16 @@ content{
 }
 
 #tweetPost{
-    display: flex;
-    flex-direction: column;
-    margin-left: 20px;
     width: 100%;
 }
 
-#tweetPost textarea{
+#tweetPost form{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+#tweetPost form textarea{
     font-size: 1.2em;
     padding: 10px;
     height: 10vh;
@@ -138,6 +142,12 @@ content{
     padding-left: 10px;
     width: 100%;
 }
+
+.tweetBody img{ /*dfsdfsdf*/
+    object-fit: scale-down;
+    max-width: 70%;
+}
+
 
 .tweetInfo{
     display: flex;
@@ -227,12 +237,6 @@ content{
     margin-right: 5px;
 }
 
-.memberButton{
-    padding: 0px 5px;
-    font-size: 1em; 
-    margin: auto;
-}
-
 .memberProfilInfo{
     display: flex;
     flex-direction: row;
@@ -242,22 +246,34 @@ content{
     margin-bottom: 3vh;
 }
 
+.memberProfilInfo form{
+    display: flex;
+    flex-direction: row;
+}
+
+.memberButton{
+    padding: 0px 5px;
+    font-size: 1em; 
+    margin: auto;
+    align-self: center;
+}
+
 
 
 /**************** MEDIA QUERY *****************/
 
 
 
-@media screen and (max-width: 1035px){
+@media screen and (max-width: 1300px){
     .sideBlocks{ width: 10vw; }
     #timeline  { width: 60vw; } 
 }
 
-@media screen and (max-width: 786px){
+@media screen and (max-width: 900px){
     .sideBlocks{ width: 5vw;  }
     #timeline  { 
         width: 70vw;
-        margin-top: 120px; 
+        margin-top: 137px; 
     } 
     #topMenu{
         flex-direction: column;
@@ -270,9 +286,6 @@ content{
     #topMenu #profilContainer img{
         display: none;
     }
-    #topMenu a:first-of-type{
-        height: 0px;
-    }
     #topMenu #search_container button{
 
         margin-right: 0vw;
@@ -280,15 +293,14 @@ content{
     }
 }
 
-@media screen and (max-width: 573px){
+@media screen and (max-width: 638px){
     .sideBlocks{ width: 0vw; }
     #timeline  { width: 100vw; } 
 }
 
-@media screen and (max-width: 385px){
+@media screen and (max-width: 450px){
     .memberProfilInfo{
         flex-direction: column;
     }
 }
-
 </style>

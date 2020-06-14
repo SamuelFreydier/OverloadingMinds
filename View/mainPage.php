@@ -25,7 +25,7 @@
         </div>
 
         <!-- Bon ba la c'est juste le nom du site -->
-        <h1 style="color: #F9F8E6;"><a href="/">Overloading Minds</a></h1>
+        <h1 style="color: #F9F8E6;"><a href="/" style="color: #F9F8E6;">Overloading Minds</a></h1>
 
         <!-- Partie avec la bar de recherche -->
         <div id="search_container">
@@ -43,7 +43,7 @@
     <!-- C'est la ou il y a la page principale -->
     <content>
         <!-- Div vide qui permet d'avoir la timeline au milieu -->
-        <div style="width: 30vw; height: 100%;"> </div>
+        <div class="sideBlocks"> </div>
 
         <!-- Div qui contient la timeline -->
         <div id="timeline">
@@ -209,7 +209,7 @@
         </div>
 
         <!-- Div vide qui permet d'avoir la timeline au milieu -->
-        <div style="width: 30vw; height: 100%;"></div>
+        <div class="sideBlocks"></div>
 
     </content>
 </body>

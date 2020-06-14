@@ -20,7 +20,7 @@
         </div>
 
         <!-- Bon ba la c'est juste le nom du site -->
-        <h1 style="color: #F9F8E6;"><a href="/">Overloading Minds</a></h1>
+        <h1 style="color: #F9F8E6;"><a href="/" style="color: #F9F8E6;">Overloading Minds</a></h1>
         <!-- Partie avec la bar de recherche -->
         <div id="search_container">
             <!-- J'ai mis dans un "form" mais je sait pas si ca change qque chose avec le php -->
