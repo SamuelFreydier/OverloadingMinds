@@ -247,7 +247,7 @@ class TweetController extends ControllerBase
 
     public function formUpdateHandler(Request $request, $id) {
         $restaurant = $this->app->getService('restaurantFinder')->findOneById($id);
-        return $this->app->render('updateRestaurant', ["restaurant" => $restaurant]);
+        return $this->app->render('updateRestaurant', ["restaurant" => $restaurant])
     }
     
     public function deleteHandler(Request $request, $id) {
