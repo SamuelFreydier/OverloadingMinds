@@ -16,18 +16,18 @@
         <div id="profilContainer">
             <!-- L'image est a l'interieur d'une balise <a> comme ca si on clique dessu ca renvoie sur le profil -->
             <a href="/user/<?php echo $params['auth']; ?>" style="color: #F9F8E6; height: 30px;"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-            <a href="/user/<?php echo $params['auth']; ?>" style="color: #F9F8E6; text-decoration: none;">return</a>
+            <a href="/user/<?php echo $params['auth']; ?>" style="color: #F9F8E6; text-decoration: none;">Retour</a>
         </div>
 
         <!-- Bon ba la c'est juste le nom du site -->
-        <h1 style="color: #F9F8E6;"><a href="/">Overloading Minds</a></h1>
+        <h1 style="color: #F9F8E6;"><a href="/" style="color: #F9F8E6;">Overloading Minds</a></h1>
 
         <!-- Partie avec la bar de recherche -->
         <div id="search_container">
             <!-- J'ai mis dans un "form" mais je sait pas si ca change qque chose avec le php -->
             <form action="/members" method="GET">
                 <!-- l'input est de type texte, c'est la ou l'utilisateur va ecrire. je sait pas si il falait mettre des trucs en plus pour le php -->
-                <input type="text" name="search" placeholder="Search..">
+                <input type="text" name="search" placeholder="Recherche...">
                 <!-- encore une fois je sait pas si il falait mettre des truc pour le php dans le boutton -->
                 <button type="search"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
@@ -35,18 +35,22 @@
     </div>
 
     <content>
-        <div style="width: 30vw; height: 100%;"> </div>
-            <div id="timeline">
+        <div class="sideBlocks"> </div>
+            <div id="timeline" style="background-color: #F9F8E6; padding: 20px;">
+            <div id="tweetPost">
+                <h2><b>Modifier la photo de profil:</b></h2>
                 <form action="/editimg" method="POST" enctype="multipart/form-data">
                     <input type="file" name="img">
-                    <button type="submit">Save</button>
+                    <button type="submit">Sauvegarder</button>
                 </form>
+                <h2><b>Modifier la bio du profil:</b></h2>
                 <form action="/editbio" method="POST">
-                    <textarea placeholder="New bio" name="bio"></textarea>
-                    <button type="submit">Save</button>
+                    <textarea placeholder="Nouvelle bio" name="bio"></textarea>
+                    <button type="submit">Sauvegarder</button>
                 </form>
             </div>
-        <div style="width: 30vw; height: 100%;"></div>
+            </div>
+        <div class="sideBlocks"></div>
     </content>
 
 </body>

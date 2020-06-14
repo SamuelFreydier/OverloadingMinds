@@ -5,6 +5,15 @@
     font-family: 'Jost','Roboto', sans-serif;
 }
 
+a{
+    text-decoration: none;
+    color : black;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
 body{
     background-color: #189BA3;
     height: 94vh;
@@ -146,6 +155,7 @@ content{
 .tweetBody img{ /*dfsdfsdf*/
     object-fit: scale-down;
     max-width: 70%;
+    max-height: 60vh;
 }
 
 
@@ -298,7 +308,7 @@ content{
     #timeline  { width: 100vw; } 
 }
 
-@media screen and (max-width: 450px){
+@media screen and (max-width: 385px){
     .memberProfilInfo{
         flex-direction: column;
     }

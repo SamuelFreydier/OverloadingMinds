@@ -70,7 +70,7 @@ class TweetController extends ControllerBase
         }
 
         if(strlen($text) > 140) {
-            return $this->app->render('mainPage');
+            return $this->app->render('formredirection');
         }
 
         
