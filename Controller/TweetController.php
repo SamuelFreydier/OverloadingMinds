@@ -87,7 +87,7 @@ class TweetController extends ControllerBase
         $this->app->getService('tweetFinder')->save($tweet); //Création
         
 
-        if($retweet === null) { //Si RT null (n'est pas un RT)
+        if($retweet === null && $_FILES['img']['size'] !== 0) { //Si RT null (n'est pas un RT) et qu'il y a une image
             $lasttweetid = $this->app->getService('tweetFinder')->findLastTweet();
             $img = $_FILES['img']; //On prend l'image associée au tweet
             $ext = strtolower(substr($img['name'], -3)); 
