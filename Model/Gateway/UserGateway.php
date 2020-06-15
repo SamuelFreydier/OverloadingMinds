@@ -4,21 +4,21 @@ namespace Model\Gateway;
 
 use App\Src\App;
 
-class UserGateway
+class UserGateway //Un utilisateur
 {
     private $conn;
 
     private $id;
     private $username;
-    private $password;
+    private $password; //Chiffré avec le hash de php
     private $bio;
     private $email;
 
-    private $follower;
-    private $userfollowed;
+    private $follower; //Nombre de gens qu'il suit (table intermédiaire)
+    private $userfollowed; //Nombre de gens qui le suivent (table intermédiaire)
     private $boolfollowed;
 
-    private $img;
+    private $img; //Image de profil
 
     public function __construct(App $app)
     {

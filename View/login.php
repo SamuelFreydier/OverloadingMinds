@@ -19,10 +19,12 @@
 
         <h1 id="Title">OVERLOADING <br>MINDS</h1>
         
-        <form id="login_box" action="/loginfinished" method="POST">
+        <form id="login_box" action="/login" method="POST">
+            <?php if(isset($params['error'])): ?>
+                <?php echo "<p style = 'color : purple'>" . $params['error'] . "</p>"; ?>
+            <?php endif; ?>
             <div><input type="text" name="username" placeholder="nom d'utilisateur" value="<?php if(isset($user)) echo $user['username']; ?>"></div>
             <div><input type="password" name="password" placeholder="mot de passe"></div>
-            <a href="#"">Mot de passe oublié ?</a>
             <button type="submit">Connexion</button>
             <a href="/signup">S'inscrire</a>
         </form>

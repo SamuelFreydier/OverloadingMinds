@@ -42,13 +42,25 @@
         <div class="sideBlocks"> </div>
             <div id="timeline" style="background-color: #F9F8E6; padding: 20px;">
             <div id="tweetPost">
+                <?php if(isset($params['errorimg'])): ?>
+                    <?php echo "<p style = 'color : red'>" . $params['errorimg'] . "</p>"; ?>
+                <?php endif; ?>
+                <?php if(isset($params['validationimg'])): ?>
+                    <?php echo "<p style = 'color : green'>" . $params['validationimg'] . "</p>"; ?>
+                <?php endif; ?>
                 <h2><b>Modifier la photo de profil:</b></h2>
                 <form action="/editimg" method="POST" enctype="multipart/form-data">
                     <input type="file" name="img">
                     <button type="submit">Sauvegarder</button>
                 </form>
+                <?php if(isset($params['error'])): ?>
+                    <?php echo "<p style = 'color : red'>" . $params['error'] . "</p>"; ?>
+                <?php endif; ?>
+                <?php if(isset($params['validation'])): ?>
+                    <?php echo "<p style = 'color : green'>" . $params['validation'] . "</p>"; ?>
+                <?php endif; ?>
                 <h2><b>Modifier la bio du profil:</b></h2>
-                <form action="/editbio" method="POST">
+                <form action="/editprofile" method="POST">
                     <textarea placeholder="Nouvelle bio" name="bio"></textarea>
                     <button type="submit">Sauvegarder</button>
                 </form>

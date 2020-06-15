@@ -19,7 +19,10 @@
 
         <h1 id="Title">OVERLOADING <br>MINDS</h1>
         
-        <form id="login_box" style="height :46vh" action ='/created' method='POST'>
+        <form id="login_box" style="height :46vh" action ='/signup' method='POST'>
+            <?php if(isset($params['error'])): ?>
+                <?php echo "<p style = 'color : purple'>" . $params['error'] . "</p>"; ?>
+            <?php endif; ?>
             <div><input type="email" name="email" placeholder="e-mail"></div>
             <div><input type="text" name="username" placeholder="nom d'utilisateur"></div>
             <div><input type="password" name="password" placeholder="mot de passe"></div>

@@ -168,6 +168,8 @@
                                 </div>
                             
                             <?php else: ?>
+                                <div class="tweetMainContainer">
+                                </div>
                                 <!-- Code generique des tweets -->
                                 <div class="tweetContainer">
                                     <!-- Image du profil avec un <a> pour cliquer sur la photo -->

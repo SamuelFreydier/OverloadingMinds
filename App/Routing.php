@@ -1,8 +1,6 @@
 <?php
 
 namespace App;
-use Controller\CityController;
-use Controller\RestaurantsController;
 use App\Src\App;
 use Controller\UserController;
 use Controller\TweetController;
@@ -18,78 +16,48 @@ class Routing
 
     public function setup() {
 
-        $city = new CityController($this->app);
-        $restaurant = new RestaurantsController($this->app);
         $user = new UserController($this->app);
         $tweet = new TweetController($this->app);
 
-        $this->app->get('/', [$tweet, 'mainPageHandler']);
+        $this->app->get('/', [$tweet, 'mainPageHandler']); //Timeline
 
-        $this->app->get('/city/(\d+)', [$city, 'cityHandler']);
+        $this->app->post('/', [$tweet, 'newTweetHandler']); //Timeline (new tweet & retweet)
 
-        $this->app->get('/countries', [$city, 'countriesHandler']);
+        $this->app->post('/liked', [$tweet, 'tweetLikeHandler']); //Timeline (like/unlike)
 
-        $this->app->get('/countries/(\w+)', [$city, 'countryHandler']);
+        $this->app->get('/login', [$user, 'userLoginFormHandler']); //Login
 
-        $this->app->get('/create', [$city, 'formHandler']);
+        $this->app->post('/login', [$user, 'userLoginHandler']); //Login après échec
 
-        $this->app->get('/recherche', [$city, 'searchHandlerBegin']);
+        $this->app->get('/signup', [$user, 'userSignupFormHandler']); //Inscription
 
-        $this->app->get('/recherche/(\w+)', [$city, 'searchHandler']);
+        $this->app->post('/signup', [$user, 'userSignupHandler']); //Inscription après échec
+
+        $this->app->get('/logout', [$user, 'userLogout']); //Déconnexion
         
-        //$this->app->post('/', [$city, 'createHandler']);
+        $this->app->post('/likedprofile', [$tweet, 'tweetLikeProfileHandler']); //Profil (like/unlike)
 
-        $this->app->get('/restaurants', [$restaurant, 'restaurantsHandler']);
+        $this->app->get('/members', [$user, 'userResearchHandler']); //Recherche
 
-        $this->app->get('/restaurant/(\d+)', [$restaurant, 'restaurantHandler']);
+        $this->app->post('/newfollow', [$user, 'userFollowHandler']); //Recherche (follow/unfollow)
 
-        $this->app->get('/createrestaurant', [$restaurant, 'formHandler']);
+        $this->app->post('/newfollowprofile', [$user, 'userFollowProfileHandler']); //Profil (follow/unfollow)
 
-        $this->app->post('/restaurants', [$restaurant, 'createHandler']);
+        $this->app->get('/user/(\w+)', [$user, 'userProfileHandler']); //Profil
 
-        $this->app->get('/restaurant/(\d+)/update', [$restaurant, 'formUpdateHandler']);
+        $this->app->get('/editprofile', [$user, 'userEditFormHandler']); //Paramètres
 
-        $this->app->post('/restaurant/(\d+)', [$restaurant, 'updateHandler']);
+        $this->app->post('/editprofile', [$user, 'userEditHandler']); //Paramètres (validation ou échec)
 
-        $this->app->get('/restaurant/(\d+)/deleted', [$restaurant, 'deleteHandler']);
+        $this->app->post('/editimg', [$user, 'userEditAvatar']); //Paramètres (validation/échec img)
 
-        $this->app->get('/login', [$user, 'userLoginFormHandler']);
+        $this->app->post('/deletetweet', [$tweet, 'deleteTweetHandler']); //Timeline (delete)
 
-        $this->app->post('/loginfinished', [$user, 'userLoginHandler']);
-
-        $this->app->get('/signup', [$user, 'userSignupFormHandler']);
-
-        $this->app->post('/created', [$user, 'userSignupHandler']);
-
-        $this->app->post('/', [$tweet, 'newTweetHandler']);
-
-        $this->app->post('/liked', [$tweet, 'tweetLikeHandler']);
-
-        $this->app->post('/likedprofile', [$tweet, 'tweetLikeProfileHandler']);
-
-        $this->app->post('/rt', [$tweet, 'newTweetHandler']);
-
-        $this->app->get('/members', [$user, 'userResearchHandler']);
-
-        $this->app->post('/newfollow', [$user, 'userFollowHandler']);
-
-        $this->app->post('/newfollowprofile', [$user, 'userFollowProfileHandler']);
-
-        $this->app->get('/user/(\w+)', [$user, 'userProfileHandler']);
-
-        $this->app->get('/editprofile', [$user, 'userEditFormHandler']);
-
-        $this->app->post('/editbio', [$user, 'userEditHandler']);
-
-        $this->app->get('/logout', [$user, 'userLogout']);
-
-        $this->app->post('/deletetweet', [$tweet, 'deleteTweetHandler']);
-
-        $this->app->post('/deletetweetprofile', [$tweet, 'deleteTweetHandlerProfile']);
-
-        $this->app->post('/editimg', [$user, 'userEditAvatar']);
+        $this->app->post('/deletetweetprofile', [$tweet, 'deleteTweetHandlerProfile']); //Profil (delete)
 
 
-        $this->app->get('/404', [$user, 'display404']);
+
+
+        $this->app->get('/404', [$user, 'display404']); //404
     }
 }

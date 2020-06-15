@@ -55,9 +55,18 @@
             <div id="tweetBox">
                 <!-- Image a coté de la boite pour ecrire le tweet -->
                 <img src="<?php echo $params['author']->getImg(); ?>" class="profilPic"/>
-
+                
                 <!-- Div qui contient la boite de texte et le boutton pour poster -->
                 <div id="tweetPost">
+                    <?php if(isset($params['error'])): ?>
+                        <?php echo "<p style = 'color : red'>" . $params['error'] . "</p>"; ?>
+                    <?php endif; ?>
+                    <?php if(isset($params['validation'])): ?>
+                        <?php echo "<p style = 'color : green'>" . $params['validation'] . "</p>"; ?>
+                    <?php endif; ?>
+                    <?php if(isset($params['alert'])): ?>
+                        <?php echo "<p style = 'color : darkorange'>" . $params['alert'] . "</p>"; ?>
+                    <?php endif; ?>
                     <!-- Textarea simple, il faut sans doute rajouter des trucs pour le php -->
                     <form action="/" method="POST" enctype="multipart/form-data">
                         
@@ -121,7 +130,7 @@
                                             <!-- les retweet -->
                                             <div class="tweerLikes">
                                                 <!-- Boutton pour retweeter -->
-                                                <form action="/rt" method="POST">
+                                                <form action="/" method="POST">
                                                     <input type="hidden" name="text" value="<?php echo null ?>">
                                                     <input type="hidden" name="id" value="<?php echo $tweet->getRetweet()->getId(); ?>">
                                                     <button type="submit"><i class="fa fa-retweet fa-2x" aria-hidden="true"></i></button>
@@ -146,6 +155,9 @@
                                 </div>
 
                             <?php else: ?>
+
+                                <div class="tweetMainContainer">
+                                </div>
                                 <!-- Code generique des tweets -->
                                 <div class="tweetContainer">
                                     <!-- Image du profil avec un <a> pour cliquer sur la photo -->
@@ -181,7 +193,7 @@
                                             <!-- les retweet -->
                                             <div class="tweerLikes">
                                                 <!-- Boutton pour retweeter -->
-                                                <form action="/rt" method="POST">
+                                                <form action="/" method="POST">
                                                     <input type="hidden" name="text" value="<?php echo null ?>">
                                                     <input type="hidden" name="id" value="<?php echo $tweet->getId(); ?>">
                                                     <button type="submit"><i class="fa fa-retweet fa-2x" aria-hidden="true"></i></button>

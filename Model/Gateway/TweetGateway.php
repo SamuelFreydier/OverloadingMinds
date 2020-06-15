@@ -4,19 +4,19 @@ namespace Model\Gateway;
 
 use App\Src\App;
 
-class TweetGateway
+class TweetGateway //Un tweet
 {
     private $conn;
 
     private $id;
     private $text;
     private $date;
-    private $author;
-    private $retweet;
+    private $author; //Id d'un utilisateur
+    private $retweet; //Id d'un tweet sur lequel le tweet courant pointe
 
-    private $likes;
-    private $nbRetweets;
-    private $img;
+    private $likes; //Nombre de likes (table intermédiaire)
+    private $nbRetweets; //Nombre de retweets
+    private $img; //Image si présente
 
     public function __construct(App $app)
     {
