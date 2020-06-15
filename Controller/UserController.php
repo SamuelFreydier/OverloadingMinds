@@ -105,7 +105,7 @@ class UserController extends ControllerBase
         session_start(); //On démarre la session pour le connecter directement
         $_SESSION['auth'] = $username; //On enregistre son nom dans la session
 
-        header("Location: /"); //Redirection sur la timeline
+        header("Location: /");
         exit();
     }
 
@@ -123,11 +123,8 @@ class UserController extends ControllerBase
             $error = "Nom d'utilisateur ou mot de passe incorrect."; //Erreur
             return $this->app->render('login', ['error' => $error]);
         }
-
-        session_start();
         $_SESSION['auth'] = $username; //On démarre la session avec à l'intérieur le nom de l'utilisateur
-       
-        header("Location: /"); //Redirection sur la timeline
+        header("Location: /");
         exit();
     }
 
@@ -288,13 +285,13 @@ class UserController extends ControllerBase
 
     public function logoutRedirect() { //Logout l'utilisateur si sa session n'existe pas
         if(!isset($_SESSION['auth'])) { 
-            header("Location: /login"); //Redirection sur la page login
+            header('Location: /login');
             exit();
         }
     }
     public function loginRedirect() { //Login l'utilisateur si sa session existe déjà
         if(isset($_SESSION['auth'])) { //Si l'utilisateur est déjà connecté il faut le rediriger sur la timeline
-            header("Location: /"); //Redirection sur la page timeline
+            header('Location: /');
             exit();
         }
     }

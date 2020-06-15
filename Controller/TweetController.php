@@ -86,8 +86,6 @@ class TweetController extends ControllerBase
         ];
         $this->app->getService('tweetFinder')->save($tweet); //Création
         
-        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author->getId());
-        $tweets = $this->renderTweets($tweets);
 
         if($retweet === null) { //Si RT null (n'est pas un RT)
             $lasttweetid = $this->app->getService('tweetFinder')->findLastTweet();
@@ -101,9 +99,14 @@ class TweetController extends ControllerBase
             }
             else { //Si le fichier n'est pas bon, message d'alerte
                 $alert = "L'image n'a pas pu être envoyée (PNG, JPG, GIF autorisés).";
+                $this->app->getService('tweetFinder')->deleteTweet($lasttweetid->getId());
+                $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author->getId());
+                $tweets = $this->renderTweets($tweets);
                 return $this->app->render('mainPage', ['author' => $author, 'tweets' => $tweets, "alert" => $alert]);
             }
         }
+        $tweets = $this->app->getService('tweetFinder')->findTweetToDisplay($author->getId());
+        $tweets = $this->renderTweets($tweets);
         //Le tweet a été créé sans encombre
         $validation = "Le tweet a bien été envoyé.";
         return $this->app->render('mainPage', ['author' => $author, 'tweets' => $tweets, "validation" => $validation]);
@@ -123,7 +126,7 @@ class TweetController extends ControllerBase
             $this->app->getService('tweetFinder')->unlikeTweet($id, $userid); //Sinon, on le unlike
         }
 
-        header("Location: /"); //On redirige sur la Timeline (mainPageHandler)
+        header('Location: /');
         exit();
     }
 
@@ -153,7 +156,7 @@ class TweetController extends ControllerBase
         unlink($tweet->getImg()); //On supprime l'image associée au chemin indiqué par le tweet (Une image a pour nom l'id du tweet)
         $this->app->getService('tweetFinder')->deleteTweet($tweetid); //On fait la fonction Delete (voir TweetFinder)
         
-        header("Location: /"); //On redirige sur la timeline
+        header('Location: /');
         exit();
     }
 
@@ -172,7 +175,7 @@ class TweetController extends ControllerBase
 
     public function logoutRedirect() { //Logout l'utilisateur si sa session n'existe pas
         if(!isset($_SESSION['auth'])) { 
-            header("Location: /login"); //Redirection sur la page login
+            header('Location: /login');
             exit();
         }
     }
