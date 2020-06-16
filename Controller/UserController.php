@@ -60,7 +60,7 @@ class UserController extends ControllerBase
 
 
         $aValid = '_';
-        if(!ctype_alnum(str_replace($aValid, '', $username))) { //Si le pseudo contient des caractères spéciaux et des espaces (seule exception : _)
+        if(!ctype_alnum(str_replace($aValid, '', $username)) || $username === "BASEIMAGE") { //Si le pseudo contient des caractères spéciaux et des espaces (seule exception : _)
             $error = "Votre nom d'utilisateur ne doit pas contenir de caractères spéciaux."; //Message d'erreur
             return $this->app->render('signup', ["error" => $error]);
         }
