@@ -259,6 +259,7 @@ content{
 .memberProfilInfo form{
     display: flex;
     flex-direction: row;
+    margin-left: auto;
 }
 
 .memberButton{

@@ -59,13 +59,13 @@
                 <!-- Div qui contient la boite de texte et le boutton pour poster -->
                 <div id="tweetPost">
                     <?php if(isset($params['error'])): ?>
-                        <?php echo "<p style = 'color : red'>" . $params['error'] . "</p>"; ?>
+                        <?php echo "<p style = 'color : red; margin-left: 20px'>" . $params['error'] . "</p>"; ?>
                     <?php endif; ?>
                     <?php if(isset($params['validation'])): ?>
-                        <?php echo "<p style = 'color : green'>" . $params['validation'] . "</p>"; ?>
+                        <?php echo "<p style = 'color : green; margin-left: 20px'>" . $params['validation'] . "</p>"; ?>
                     <?php endif; ?>
                     <?php if(isset($params['alert'])): ?>
-                        <?php echo "<p style = 'color : darkorange'>" . $params['alert'] . "</p>"; ?>
+                        <?php echo "<p style = 'color : darkorange; margin-left: 20px'>" . $params['alert'] . "</p>"; ?>
                     <?php endif; ?>
                     <!-- Textarea simple, il faut sans doute rajouter des trucs pour le php -->
                     <form action="/" method="POST" enctype="multipart/form-data">
