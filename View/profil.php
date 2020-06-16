@@ -142,7 +142,7 @@
                                             <!-- les retweet -->
                                             <div class="tweerLikes">
                                                 <!-- Boutton pour retweeter -->
-                                                <form action="/rt" method="POST">
+                                                <form action="/" method="POST">
                                                     <input type="hidden" name="text" value="<?php echo null ?>">
                                                     <input type="hidden" name="id" value="<?php echo $tweet->getRetweet()->getId(); ?>">
                                                     <button type="submit"><i class="fa fa-retweet fa-2x" aria-hidden="true"></i></button>
@@ -206,7 +206,7 @@
                                             <!-- les retweet -->
                                             <div class="tweerLikes">
                                                 <!-- Boutton pour retweeter -->
-                                                <form action="/rt" method="POST">
+                                                <form action="/" method="POST">
                                                     <input type="hidden" name="text" value="<?php echo null ?>">
                                                     <input type="hidden" name="id" value="<?php echo $tweet->getId(); ?>">
                                                     <button type="submit"><i class="fa fa-retweet fa-2x" aria-hidden="true"></i></button>
